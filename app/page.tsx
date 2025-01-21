@@ -8,5 +8,9 @@ export default function Home() {
       <App />
       <Footer />
     </>
+
+
+
+
   );
 }

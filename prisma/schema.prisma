@@ -14,24 +14,47 @@ datasource db {
 }
 
 model User {
-  id      String  @id @default(cuid())
-  email   String
-  name    String?
-  quizzes Quiz[]
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  quizzes   Quiz[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Quiz {
-  id        String     @id @default(cuid())
-  title     String
-  questions Question[]
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String
+  id              String     @id @default(cuid())
+  title           String
+  description     String
+  category        String
+  difficultyLevel String
+  published       Boolean    @default(false)
+  questions       Question[]
+  author          User       @relation(fields: [authorId], references: [id])
+  authorId        String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([authorId])
 }
 
 model Question {
-  id     String  @id @default(cuid())
-  text   String
-  isTrue Boolean
-  quiz   Quiz    @relation(fields: [quizId], references: [id])
-  quizId String
+  id      String   @id @default(cuid())
+  text    String
+  options Option[]
+  quiz    Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId  String
+  order   Int      @default(0)
+
+  @@index([quizId])
+}
+
+model Option {
+  id         String   @id @default(cuid())
+  text       String
+  isCorrect  Boolean  @default(false)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+
+  @@index([questionId])
 }
