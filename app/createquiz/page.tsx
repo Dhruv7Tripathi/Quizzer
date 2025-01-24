@@ -41,7 +41,8 @@ export default function CreateQuiz() {
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
-      await axios.post('/api/quiz', { ...data, userId: 'currentUserId' });
+      console.log("Form data", data);
+      await axios.post('/api/quiz', data);
       reset();
       alert('Quiz created successfully!');
     } catch (error) {

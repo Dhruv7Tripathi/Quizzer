@@ -14,16 +14,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   email     String   @unique
   name      String?
+  password  String
+  image     String
   quizzes   Quiz[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Quiz {
-  id              String     @id @default(cuid())
+  id              String     @id @default(uuid())
   title           String
   description     String
   category        String
@@ -39,7 +41,7 @@ model Quiz {
 }
 
 model Question {
-  id      String   @id @default(cuid())
+  id      String   @id @default(uuid())
   text    String
   options Option[]
   quiz    Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
@@ -50,7 +52,7 @@ model Question {
 }
 
 model Option {
-  id         String   @id @default(cuid())
+  id         String   @id @default(uuid())
   text       String
   isCorrect  Boolean  @default(false)
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)

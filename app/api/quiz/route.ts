@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+// import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { title, description, category, difficultyLevel, questions, authorId } = body;
+    // const body = await request.json();
+    const { title, description, category, difficultyLevel, questions, authorId } = await request.json();
 
-    // Validate required fields
     if (!title || !description || !category || !difficultyLevel || !questions || !Array.isArray(questions) || !authorId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
@@ -16,7 +14,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate questions format
     for (const question of questions) {
       if (!question.text || !Array.isArray(question.options) || question.options.length < 2) {
         return NextResponse.json(
@@ -25,7 +22,6 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Ensure there is exactly one correct answer
       const correctOptions = question.options.filter((option: { isCorrect: boolean }) => option.isCorrect);
       if (correctOptions.length !== 1) {
         return NextResponse.json(
@@ -71,7 +67,7 @@ export async function POST(request: NextRequest) {
       quiz,
     });
   } catch (error) {
-    console.error('Error creating quiz:', error);
+    console.log('Error creating quiz:', error);
 
     // Ensure proper error handling
     const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
@@ -80,40 +76,41 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-export async function GET() {
-  try {
-    const quizzes = await prisma.quiz.findMany({
-      where: {
-        published: true,
-      },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        category: true,
-        difficultyLevel: true,
-        createdAt: true,
-        _count: {
-          select: {
-            questions: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
 
-    return NextResponse.json(quizzes);
-  } catch (error) {
-    console.error('Error fetching quizzes:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch quizzes' },
-      { status: 500 }
-    );
-  }
 }
+// export async function GET() {
+//   try {
+//     const quizzes = await prisma.quiz.findMany({
+//       where: {
+//         published: true,
+//       },
+//       select: {
+//         id: true,
+//         title: true,
+//         description: true,
+//         category: true,
+//         difficultyLevel: true,
+//         createdAt: true,
+//         _count: {
+//           select: {
+//             questions: true,
+//           },
+//         },
+//       },
+//       orderBy: {
+//         createdAt: 'desc',
+//       },
+//     });
+
+//     return NextResponse.json(quizzes);
+//   } catch (error) {
+//     console.error('Error fetching quizzes:', error);
+//     return NextResponse.json(
+//       { error: 'Failed to fetch quizzes' },
+//       { status: 500 }
+//     );
+//   }
+// }
 // export async function GET() {
 //   try {
 //     const quizzes = await prisma.quiz.findMany({
