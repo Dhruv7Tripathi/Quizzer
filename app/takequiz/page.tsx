@@ -1,8 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 ;
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/db";
 import { Card } from "@/components/ui/card";
 import {
   Table,
