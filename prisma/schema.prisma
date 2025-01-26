@@ -16,12 +16,11 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  name      String?
-  password  String
-  image     String?
+  name      String
+  image     String
   quizzes   Quiz[]
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  provider  Provider
 }
 
 model Quiz {
@@ -59,4 +58,8 @@ model Option {
   questionId String
 
   @@index([questionId])
+}
+
+enum Provider {
+  Google
 }

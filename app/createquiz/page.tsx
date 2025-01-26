@@ -10,6 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { PlusCircle, MinusCircle, Loader2 } from "lucide-react";
+import { useSession } from 'next-auth/react';
+
+
 
 interface Question {
   text: string;
