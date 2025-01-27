@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,15 +11,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { PlusCircle, MinusCircle, Loader2 } from "lucide-react";
 import { useSession } from 'next-auth/react';
-
+import { useRouter } from 'next/navigation';
 
 
 interface Question {
+  id: string;
   text: string;
   isTrue: boolean;
 }
 
 interface FormData {
+  id: string;
   title: string;
   description: string;
   category: string;
@@ -28,12 +30,13 @@ interface FormData {
 }
 
 export default function CreateQuiz() {
+  const { data: session, status } = useSession();
   const { register, control, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
       questions: [{ text: '', isTrue: true }],
     },
   });
-
+  const router = useRouter();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'questions',
@@ -41,11 +44,29 @@ export default function CreateQuiz() {
 
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/signin')
+    } else if (status === 'authenticated') {
+      router.push('/createquiz')
+    }
+
+  }, [status])
+
   const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
       console.log("Form data", data);
-      await axios.post('/api/quiz', data);
+      await axios.post('/api/quiz', {
+        userId: session?.user.id,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        difficultyLevel: data.difficulty,
+        questions: data.questions,
+
+
+      });
       reset();
       alert('Quiz created successfully!');
     } catch (error) {
@@ -126,7 +147,7 @@ export default function CreateQuiz() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => append({ text: '', isTrue: true })}
+                    onClick={() => append({ id: Date.now().toString(), text: '', isTrue: true })}
                     className="flex items-center gap-2"
                   >
                     <PlusCircle className="h-4 w-4" />

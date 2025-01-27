@@ -1,9 +1,68 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// generator client {
+//   provider = "prisma-client-js"
+// }
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
 
+// model User {
+//   id        String     @id @default(uuid())
+//   email     String     @unique
+//   name      String
+//   image     String
+//   quizzes   Quiz[]
+//   questions Question[]
+//   options   Option[]
+//   createdAt DateTime   @default(now())
+//   provider  Provider
+// }
+
+// model Quiz {
+//   id              String     @id @default(uuid())
+//   title           String
+//   description     String
+//   category        String
+//   difficultyLevel String
+//   published       Boolean    @default(false)
+//   questions       Question[]
+//   userId          String?
+//   user            User?      @relation(fields: [userId], references: [id])
+//   createdAt       DateTime   @default(now())
+//   updatedAt       DateTime   @updatedAt
+
+//   @@index([userId])
+// }
+
+// model Question {
+//   id      String   @id @default(uuid())
+//   text    String
+//   options Option[]
+//   quiz    Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+//   quizId  String
+//   order   Int      @default(0)
+//   User    User?    @relation(fields: [userId], references: [id])
+//   userId  String?
+
+//   @@index([quizId])
+// }
+
+// model Option {
+//   id         String   @id @default(uuid())
+//   text       String
+//   isCorrect  Boolean  @default(false)
+//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   questionId String
+//   User       User?    @relation(fields: [userId], references: [id])
+//   userId     String?
+
+//   @@index([questionId])
+// }
+
+// enum Provider {
+//   Google
+// }
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,12 +73,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String     @id @default(uuid())
+  email     String     @unique
   name      String
   image     String
-  quizzes   Quiz[]
-  createdAt DateTime @default(now())
+  quizzes   Quiz[]     @relation("UserQuizzes")
+  questions Question[] @relation("UserQuestions")
+  options   Option[]   @relation("UserOptions")
+  createdAt DateTime   @default(now())
   provider  Provider
 }
 
@@ -30,34 +91,42 @@ model Quiz {
   category        String
   difficultyLevel String
   published       Boolean    @default(false)
-  questions       Question[]
-  author          User       @relation(fields: [authorId], references: [id])
-  authorId        String
+  questions       Question[] @relation("QuizQuestions")
+  userId          String?
+  user            User?      @relation("UserQuizzes", fields: [userId], references: [id])
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
-  @@index([authorId])
+  @@index([userId]) // Helps query quizzes by user
 }
 
 model Question {
-  id      String   @id @default(uuid())
-  text    String
-  options Option[]
-  quiz    Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  quizId  String
-  order   Int      @default(0)
+  id        String   @id @default(uuid())
+  text      String
+  options   Option[] @relation("QuestionOptions")
+  quiz      Quiz     @relation("QuizQuestions", fields: [quizId], references: [id], onDelete: Cascade)
+  quizId    String
+  order     Int      @default(0)
+  userId    String?
+  user      User?    @relation("UserQuestions", fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@index([quizId])
+  @@index([quizId]) // Helps query questions by quiz
 }
 
 model Option {
   id         String   @id @default(uuid())
   text       String
   isCorrect  Boolean  @default(false)
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  question   Question @relation("QuestionOptions", fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
+  userId     String?
+  user       User?    @relation("UserOptions", fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  @@index([questionId])
+  @@index([questionId]) // Helps query options by question
 }
 
 enum Provider {
