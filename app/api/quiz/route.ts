@@ -6,44 +6,37 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     const { userId, title, description, category, difficultyLevel, questions } = await request.json();
-
     if (!userId || !title || !description || !category || !difficultyLevel || !questions || !Array.isArray(questions)) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: "Missing or invalid required fields" },
         { status: 400 }
       );
     }
-
-    for (const question of questions) {
+    for (const [index, question] of questions.entries()) {
       if (!question.text || !Array.isArray(question.options) || question.options.length !== 2) {
         return NextResponse.json(
-          { error: 'Each question must have exactly 2 options' },
+          { error: `Question ${index + 1} must have text and exactly 2 options` },
           { status: 400 }
         );
       }
-
-      // Ensure the options are strictly "true" or "false"
-      const validOptions = question.options.every((option: { text: string }) =>
-        option.text === "true" || option.text === "false"
+      const validOptions = question.options.every(
+        (option: { text: string; isCorrect: boolean }) => typeof option.text === "string" && typeof option.isCorrect === "boolean"
       );
 
       if (!validOptions) {
         return NextResponse.json(
-          { error: 'Each option must be either "true" or "false"' },
+          { error: `Question ${index + 1} has invalid options. Each option must include text and a boolean isCorrect field.` },
           { status: 400 }
         );
       }
-
-      // Ensure there is exactly one correct option
-      const correctOptions = question.options.filter((option: { isCorrect: boolean }) => option.isCorrect);
-      if (correctOptions.length !== 1) {
+      const correctOptionsCount = question.options.filter((option: { text: string; isCorrect: boolean }) => option.isCorrect).length;
+      if (correctOptionsCount !== 1) {
         return NextResponse.json(
-          { error: 'Each question must have exactly one correct answer' },
+          { error: `Question ${index + 1} must have exactly one correct answer` },
           { status: 400 }
         );
       }
     }
-
     const quiz = await prisma.quiz.create({
       data: {
         title,
@@ -52,10 +45,9 @@ export async function POST(request: NextRequest) {
         difficultyLevel,
         published: false,
         questions: {
-          create: questions.map((question, index) => ({
+          create: questions.map((question, order) => ({
             text: question.text,
-            order: index,
-            user: { connect: { id: userId } },
+            order,
             options: {
               create: question.options.map((option: { text: string; isCorrect: boolean }) => ({
                 text: option.text,
@@ -66,20 +58,20 @@ export async function POST(request: NextRequest) {
         },
         user: {
           connect: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
     });
 
     return NextResponse.json({
-      message: 'Quiz created successfully',
+      message: "Quiz created successfully",
       quiz,
     });
   } catch (error: unknown) {
-    console.error('Error creating quiz:', error instanceof Error ? error.message : String(error));
+    console.error("Error creating quiz:", error instanceof Error ? error.message : String(error));
     return NextResponse.json(
-      { error: "Internal server Error" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   } finally {
