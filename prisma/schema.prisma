@@ -1,68 +1,3 @@
-// generator client {
-//   provider = "prisma-client-js"
-// }
-
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-// }
-
-// model User {
-//   id        String     @id @default(uuid())
-//   email     String     @unique
-//   name      String
-//   image     String
-//   quizzes   Quiz[]
-//   questions Question[]
-//   options   Option[]
-//   createdAt DateTime   @default(now())
-//   provider  Provider
-// }
-
-// model Quiz {
-//   id              String     @id @default(uuid())
-//   title           String
-//   description     String
-//   category        String
-//   difficultyLevel String
-//   published       Boolean    @default(false)
-//   questions       Question[]
-//   userId          String?
-//   user            User?      @relation(fields: [userId], references: [id])
-//   createdAt       DateTime   @default(now())
-//   updatedAt       DateTime   @updatedAt
-
-//   @@index([userId])
-// }
-
-// model Question {
-//   id      String   @id @default(uuid())
-//   text    String
-//   options Option[]
-//   quiz    Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
-//   quizId  String
-//   order   Int      @default(0)
-//   User    User?    @relation(fields: [userId], references: [id])
-//   userId  String?
-
-//   @@index([quizId])
-// }
-
-// model Option {
-//   id         String   @id @default(uuid())
-//   text       String
-//   isCorrect  Boolean  @default(false)
-//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-//   questionId String
-//   User       User?    @relation(fields: [userId], references: [id])
-//   userId     String?
-
-//   @@index([questionId])
-// }
-
-// enum Provider {
-//   Google
-// }
 generator client {
   provider = "prisma-client-js"
 }
@@ -73,60 +8,96 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  email     String     @unique
-  name      String
-  image     String
-  quizzes   Quiz[]     @relation("UserQuizzes")
-  questions Question[] @relation("UserQuestions")
-  options   Option[]   @relation("UserOptions")
-  createdAt DateTime   @default(now())
-  provider  Provider
+  id           String        @id @default(uuid())
+  email        String        @unique
+  name         String
+  image        String
+  quizzes      Quiz[]        @relation("UserQuizzes")
+  questions    Question[]    @relation("UserQuestions")
+  options      Option[]      @relation("UserOptions")
+  quizAttempts QuizAttempt[] @relation("UserAttempts")
+  createdAt    DateTime      @default(now())
+  provider     Provider
 }
 
 model Quiz {
-  id              String     @id @default(uuid())
+  id              String        @id @default(uuid())
   title           String
   description     String
   category        String
   difficultyLevel String
-  published       Boolean    @default(false)
-  questions       Question[] @relation("QuizQuestions")
+  published       Boolean       @default(false)
+  questions       Question[]    @relation("QuizQuestions")
   userId          String?
-  user            User?      @relation("UserQuizzes", fields: [userId], references: [id])
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  user            User?         @relation("UserQuizzes", fields: [userId], references: [id])
+  attempts        QuizAttempt[] @relation("QuizAttempts")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
-  @@index([userId]) // Helps query quizzes by user
+  @@index([userId])
 }
 
 model Question {
-  id        String   @id @default(uuid())
-  text      String
-  options   Option[] @relation("QuestionOptions")
-  quiz      Quiz     @relation("QuizQuestions", fields: [quizId], references: [id], onDelete: Cascade)
-  quizId    String
-  order     Int      @default(0)
-  userId    String?
-  user      User?    @relation("UserQuestions", fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String       @id @default(uuid())
+  text        String
+  options     Option[]     @relation("QuestionOptions")
+  quiz        Quiz         @relation("QuizQuestions", fields: [quizId], references: [id], onDelete: Cascade)
+  quizId      String
+  order       Int          @default(0)
+  userId      String?
+  user        User?        @relation("UserQuestions", fields: [userId], references: [id])
+  quizAnswers QuizAnswer[] @relation("QuestionAnswers")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
-  @@index([quizId]) // Helps query questions by quiz
+  @@index([quizId])
 }
 
 model Option {
-  id         String   @id @default(uuid())
-  text       String
-  isCorrect  Boolean  @default(false)
-  question   Question @relation("QuestionOptions", fields: [questionId], references: [id], onDelete: Cascade)
-  questionId String
-  userId     String?
-  user       User?    @relation("UserOptions", fields: [userId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id          String       @id @default(uuid())
+  text        String
+  isCorrect   Boolean      @default(false)
+  question    Question     @relation("QuestionOptions", fields: [questionId], references: [id], onDelete: Cascade)
+  questionId  String
+  userId      String?
+  user        User?        @relation("UserOptions", fields: [userId], references: [id])
+  quizAnswers QuizAnswer[] @relation("OptionAnswers")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
-  @@index([questionId]) // Helps query options by question
+  @@index([questionId])
+}
+
+model QuizAttempt {
+  id             String       @id @default(uuid())
+  quiz           Quiz         @relation("QuizAttempts", fields: [quizId], references: [id])
+  quizId         String
+  user           User         @relation("UserAttempts", fields: [userId], references: [id])
+  userId         String
+  score          Int
+  totalQuestions Int
+  answers        QuizAnswer[] @relation("AttemptAnswers")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([quizId])
+  @@index([userId])
+}
+
+model QuizAnswer {
+  id               String      @id @default(uuid())
+  attempt          QuizAttempt @relation("AttemptAnswers", fields: [attemptId], references: [id], onDelete: Cascade)
+  attemptId        String
+  question         Question    @relation("QuestionAnswers", fields: [questionId], references: [id])
+  questionId       String
+  selectedOption   Option      @relation("OptionAnswers", fields: [selectedOptionId], references: [id])
+  selectedOptionId String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  @@index([attemptId])
+  @@index([questionId])
+  @@index([selectedOptionId])
 }
 
 enum Provider {
