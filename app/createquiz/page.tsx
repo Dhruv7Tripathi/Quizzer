@@ -2,7 +2,7 @@
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,7 +35,7 @@ export default function CreateQuiz() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const { register, control, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
+  const { register, control, handleSubmit, formState: { errors } } = useForm<FormData>({
     defaultValues: {
       questions: [
         {
@@ -85,8 +85,9 @@ export default function CreateQuiz() {
       if (response.data.quiz) {
         router.push(`/takequiz/${response.data.quiz.id}`);
       }
-    } catch (error: any) {
-      alert(error.response?.data?.error || "Error creating quiz");
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      alert(axiosError.response?.data?.message || "Error creating quiz");
     } finally {
       setLoading(false);
     }

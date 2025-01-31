@@ -1,18 +1,20 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
+// Create Prisma client instance
 const prisma = new PrismaClient();
 
+// Define GET request handler
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } } // Adjust type for params
 ) {
   try {
-    const { id } = context.params;
+    const { id } = params; // Destructure the id from params
+
+    // Fetch the quiz from the database using Prisma
     const quiz = await prisma.quiz.findUnique({
-      where: {
-        id
-      },
+      where: { id },
       select: {
         id: true,
         title: true,
@@ -25,24 +27,16 @@ export async function GET(
             text: true,
             order: true,
             options: {
-              select: {
-                id: true,
-                text: true,
-              },
+              select: { id: true, text: true },
             },
           },
-          orderBy: {
-            order: 'asc',
-          },
+          orderBy: { order: "asc" },
         },
       },
     });
 
     if (!quiz) {
-      return NextResponse.json(
-        { error: "Quiz not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Quiz not found" }, { status: 404 });
     }
 
     return NextResponse.json({ quiz });

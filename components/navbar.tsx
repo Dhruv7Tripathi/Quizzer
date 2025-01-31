@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import UserAccountNav from "./userAccountNav";
 import SignInButton from "./SignInButton";
+import Image from 'next/image';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,10 +29,12 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16">
             <div className="text-l font-bold">
               <Link href="/" className="flex items-center">
-                <img
+                <Image
                   src="/logo.webp"
                   alt="logo"
                   className="h-10 w-10 mr-3 rounded-full border border-gray-200"
+                  height={10}
+                  width={10}
                 />
                 <span className="text-blue-600 dark:text-blue-400">Quizzer</span>
               </Link>

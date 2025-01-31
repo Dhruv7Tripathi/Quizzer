@@ -164,8 +164,6 @@ export default function App() {
           </div>
         </div>
       </section>
-
-      {/* Call to Action Section with Unique Design */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-pattern"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">

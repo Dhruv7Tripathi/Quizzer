@@ -21,7 +21,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold">Our Story</h2>
             <p className="text-muted-foreground">
-              Quizzer is an interactive platform designed to test and enhance your knowledge through engaging quizzes. Whether you're preparing for an exam, exploring new topics, or just having fun, Quizzer offers a seamless and enjoyable learning experience. With a clean
+              Quizzer is an interactive platform designed to test and enhance your knowledge through engaging quizzes. Whether you&apos;re preparing for an exam, exploring new topics, or just having fun, Quizzer offers a seamless and enjoyable learning experience. With a clean
               interface and a variety of question categories, it helps users sharpen their minds in an innovative way. 🚀
             </p>
             <p className="text-muted-foreground">
