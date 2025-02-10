@@ -44,6 +44,9 @@ export default function TakeQuiz() {
         const response = await axios.get(`/api/quiz/getquiz`, {
           params: { id }
         });
+        if (!response.data || !response.data.quiz) {
+          throw new Error("Quiz not found");
+        }
         setQuiz(response.data.quiz);
       } catch (error) {
         console.error("Error fetching quiz:", error);
