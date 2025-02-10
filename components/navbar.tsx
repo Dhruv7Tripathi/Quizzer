@@ -30,7 +30,7 @@ export default function Navbar() {
             <div className="text-l font-bold">
               <Link href="/" className="flex items-center">
                 <Image
-                  src="/logo.webp"
+                  src="/q.webp"
                   alt="logo"
                   className="h-10 w-10 mr-3 rounded-full border border-gray-200"
                   height={10}

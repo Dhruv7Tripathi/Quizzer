@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,7 +29,8 @@ interface Quiz {
   questions: Question[];
 }
 
-export default function TakeQuiz({ params }: { params: { id: string } }) {
+export default function TakeQuiz() {
+  const { id } = useParams();
   const router = useRouter();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [loading, setLoading] = useState(true);
@@ -40,7 +41,9 @@ export default function TakeQuiz({ params }: { params: { id: string } }) {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await axios.get(`/api/quiz/${params.id}`);
+        const response = await axios.get(`/api/quiz/getquiz`, {
+          params: { id }
+        });
         setQuiz(response.data.quiz);
       } catch (error) {
         console.error("Error fetching quiz:", error);
@@ -50,8 +53,10 @@ export default function TakeQuiz({ params }: { params: { id: string } }) {
       }
     };
 
-    fetchQuiz();
-  }, [params.id]);
+    if (id) {
+      fetchQuiz();
+    }
+  }, [id]);
 
   const handleAnswer = (questionId: string, optionId: string) => {
     setAnswers(prev => ({
@@ -70,7 +75,8 @@ export default function TakeQuiz({ params }: { params: { id: string } }) {
     setSubmitting(true);
 
     try {
-      const response = await axios.post(`/api/quiz/${quiz.id}/submit`, {
+      const response = await axios.post(`/api/quiz/submit`, {
+        id,
         answers: Object.entries(answers).map(([questionId, optionId]) => ({
           questionId,
           optionId

@@ -19,7 +19,7 @@ const SignInComponent = () => {
           <div className="absolute inset-0 bg-black opacity-20"></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <Image
-              src="/logo.webp"
+              src="/q.webp"
               width={80}
               height={80}
               alt="Logo"

@@ -70,7 +70,7 @@ export default function CreateQuiz() {
       const validatedQuestions = data.questions.map(question => {
         return {
           text: question.text,
-          options: question.options.slice(0, 2) // Ensure exactly 2 options
+          options: question.options.slice(0, 2)
         };
       });
 
