@@ -25,13 +25,13 @@ const Footer = () => {
             <Link href='/'>
               <p className="hover:text-foreground/80 text-foreground/60">Home</p>
             </Link>
-            <Link href='/createquiz/alerts'>
+            <Link href='/createquiz'>
               <p className="hover:text-foreground/80 text-foreground/60">createquiz</p>
             </Link>
-            <Link href='/contact'>
+            <Link href='/'>
               <p className="hover:text-foreground/80 text-foreground/60">Contact</p>
             </Link>
-            <Link href='/introduction'>
+            <Link href='/about'>
               <p className="hover:text-foreground/80 text-foreground/60">About</p>
             </Link>
           </div>
@@ -44,7 +44,7 @@ const Footer = () => {
             </Link>
           </div>
           <div className="flex justify-center space-y-4 flex-col mt-4">
-            <p className="hover:text-foreground/80 text-foreground/60"><a href='/termsofservice' target='_blank'>Terms of Service</a></p>
+            <p className="hover:text-foreground/80 text-foreground/60"><a href='/termsandcondition' target='_blank'>Terms of Service</a></p>
             <p className="hover:text-foreground/80 text-foreground/60"><a href='/privacypolicy' target='_blank'>Privacy Policy</a></p>
           </div>
         </div>
