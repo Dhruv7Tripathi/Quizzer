@@ -116,11 +116,12 @@ export default function TakeQuiz() {
             <CardTitle className="text-2xl font-bold text-center">{quiz.title}</CardTitle>
             <CardDescription className="text-center">
               {quiz.description}
-              <div className="mt-2">
-                <span className="font-semibold">Category:</span> {quiz.category} |{" "}
-                <span className="font-semibold">Difficulty:</span> {quiz.difficultyLevel}
-              </div>
+
             </CardDescription>
+            <div className="mt-2">
+              <span className="font-semibold">Category:</span> {quiz.category} |{" "}
+              <span className="font-semibold">Difficulty:</span> {quiz.difficultyLevel}
+            </div>
           </CardHeader>
           <CardContent>
             {score !== null ? (
