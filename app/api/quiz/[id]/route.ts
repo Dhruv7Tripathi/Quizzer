@@ -1,18 +1,23 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import prisma from "@/lib/db"
-
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+interface Params {
+  params: Promise<{ id: string }>;
+}
+export async function DELETE(
+  request: NextRequest,
+  { params }: Params
+) {
   try {
+    const { id } = await params;
+
     const session = await getServerSession()
 
     if (!session?.user?.email) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
 
-    const quizId = params.id
-
-    if (!quizId) {
+    if (!id) {
       return NextResponse.json({ message: "Quiz ID is required" }, { status: 400 })
     }
 
@@ -26,7 +31,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
     // Check if the quiz exists and belongs to the user
     const quiz = await prisma.quiz.findUnique({
-      where: { id: quizId },
+      where: { id },
     })
 
     if (!quiz) {
@@ -37,15 +42,15 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       return NextResponse.json({ message: "Unauthorized" }, { status: 403 })
     }
 
-    // Delete the quiz and all related data (cascade delete should handle this if set up in the schema)
+    // Delete the quiz and all related data
     await prisma.quiz.delete({
-      where: { id: quizId },
+      where: { id },
     })
 
     return NextResponse.json({ message: "Quiz deleted successfully" })
   } catch (error) {
-    console.error("Error deleting quiz:", error)
+    // Fix the console.error issue by using a string-only approach
+    console.error(`Error deleting quiz: ${error ? (error instanceof Error ? error.message : String(error)) : 'Unknown error'}`)
     return NextResponse.json({ message: "Failed to delete quiz" }, { status: 500 })
   }
 }
-

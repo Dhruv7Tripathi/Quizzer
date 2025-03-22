@@ -25,8 +25,8 @@ const Footer = () => {
             <Link href='/'>
               <p className="hover:text-foreground/80 text-foreground/60">Home</p>
             </Link>
-            <Link href='/createquiz'>
-              <p className="hover:text-foreground/80 text-foreground/60">createquiz</p>
+            <Link href='/quizzes'>
+              <p className="hover:text-foreground/80 text-foreground/60">quizzes</p>
             </Link>
             <Link href='/'>
               <p className="hover:text-foreground/80 text-foreground/60">Contact</p>
@@ -40,7 +40,7 @@ const Footer = () => {
               <p className="hover:text-foreground/80 text-foreground/60">Twitter</p>
             </Link>
             <Link href='https://www.linkedin.com/in/dhruv-tripathi' target='_blank'>
-              <p className="hover:text-foreground/80 text-foreground/60">LindedIn</p>
+              <p className="hover:text-foreground/80 text-foreground/60">LinkedIn</p>
             </Link>
           </div>
           <div className="flex justify-center space-y-4 flex-col mt-4">

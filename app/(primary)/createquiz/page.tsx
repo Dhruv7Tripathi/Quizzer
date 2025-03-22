@@ -89,8 +89,12 @@ export default function CreateQuiz() {
       if (response.data.quiz) {
         router.push(`/quizzes`)
       }
-    } catch (error: any) {
-      setError(error.response?.data?.message || "Error creating quiz")
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || "Failed to delete quiz");
+      } else {
+        setError("An unexpected error occurred");
+      }
     } finally {
       setLoading(false)
     }
