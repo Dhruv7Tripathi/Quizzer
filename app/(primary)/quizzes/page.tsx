@@ -69,7 +69,7 @@ export default function QuizzesPage() {
   const handleDeleteQuiz = async (quizId: string) => {
     try {
       setDeleteLoading(quizId);
-      await axios.delete(`/api/quiz/${quizId}`);
+      await axios.delete(`/api/quiz/delete/${quizId}`);
       setQuizzes((prevQuizzes) => prevQuizzes.filter((quiz) => quiz.id !== quizId));
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

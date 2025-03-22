@@ -25,7 +25,7 @@ export default function Home() {
               and lifelong learners who want to test their knowledge in an engaging way.
             </p>
             <div className="flex gap-4 justify-center">
-              <Link href="/createquiz">
+              <Link href="/quizzes">
                 <Button
                   size="lg"
                   className="bg-blue-600 hover:bg-blue-500 text-white transition-all duration-300 px-8 py-3 rounded-lg flex items-center gap-2 shadow-md"
