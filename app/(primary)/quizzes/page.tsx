@@ -172,11 +172,7 @@ export default function QuizzesPage() {
                     </Link>
                   </Button>
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" asChild>
-                      <Link href={`/edit-quiz/${quiz.id}`}>
-                        <Edit className="h-4 w-4" />
-                      </Link>
-                    </Button>
+
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button variant="ghost" size="icon" className="text-red-600">
