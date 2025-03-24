@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
-import prisma from "@/lib/db" // Assuming you have a Prisma client setup
+import prisma from "@/lib/db"
 
 export async function GET() {
   try {
@@ -33,8 +33,6 @@ export async function GET() {
         },
       },
     })
-
-    // Transform the data to include question count
     const transformedQuizzes = quizzes.map((quiz) => ({
       id: quiz.id,
       title: quiz.title,

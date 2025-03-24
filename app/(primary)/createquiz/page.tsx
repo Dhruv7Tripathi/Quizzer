@@ -91,7 +91,7 @@ export default function CreateQuiz() {
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || "Failed to delete quiz");
+        setError(error.response?.data?.message || "Failed to create quiz");
       } else {
         setError("An unexpected error occurred");
       }

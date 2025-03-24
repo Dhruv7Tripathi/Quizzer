@@ -9,15 +9,15 @@ datasource db {
 
 model User {
   id           String        @id @default(uuid())
-  email        String        @unique
   name         String
+  email        String        @unique
   image        String
-  quizzes      Quiz[]        @relation("UserQuizzes")
-  questions    Question[]    @relation("UserQuestions")
-  options      Option[]      @relation("UserOptions")
-  quizAttempts QuizAttempt[] @relation("UserAttempts")
   createdAt    DateTime      @default(now())
   provider     Provider
+  options      Option[]      @relation("UserOptions")
+  questions    Question[]    @relation("UserQuestions")
+  quizzes      Quiz[]        @relation("UserQuizzes")
+  quizAttempts QuizAttempt[] @relation("UserAttempts")
 }
 
 model Quiz {
@@ -27,12 +27,12 @@ model Quiz {
   category        String
   difficultyLevel String
   published       Boolean       @default(false)
-  questions       Question[]    @relation("QuizQuestions")
   userId          String?
-  user            User?         @relation("UserQuizzes", fields: [userId], references: [id])
-  attempts        QuizAttempt[] @relation("QuizAttempts")
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+  questions       Question[]    @relation("QuizQuestions")
+  user            User?         @relation("UserQuizzes", fields: [userId], references: [id])
+  attempts        QuizAttempt[] @relation("QuizAttempts")
 
   @@index([userId])
 }
@@ -40,15 +40,15 @@ model Quiz {
 model Question {
   id          String       @id @default(uuid())
   text        String
-  options     Option[]     @relation("QuestionOptions")
-  quiz        Quiz         @relation("QuizQuestions", fields: [quizId], references: [id], onDelete: Cascade)
   quizId      String
   order       Int          @default(0)
-  userId      String?
-  user        User?        @relation("UserQuestions", fields: [userId], references: [id])
-  quizAnswers QuizAnswer[] @relation("QuestionAnswers")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  userId      String?
+  options     Option[]     @relation("QuestionOptions")
+  quiz        Quiz         @relation("QuizQuestions", fields: [quizId], references: [id], onDelete: Cascade)
+  user        User?        @relation("UserQuestions", fields: [userId], references: [id])
+  quizAnswers QuizAnswer[] @relation("QuestionAnswers")
 
   @@index([quizId])
 }
@@ -57,28 +57,28 @@ model Option {
   id          String       @id @default(uuid())
   text        String
   isCorrect   Boolean      @default(false)
-  question    Question     @relation("QuestionOptions", fields: [questionId], references: [id], onDelete: Cascade)
   questionId  String
-  userId      String?
-  user        User?        @relation("UserOptions", fields: [userId], references: [id])
-  quizAnswers QuizAnswer[] @relation("OptionAnswers")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  userId      String?
+  question    Question     @relation("QuestionOptions", fields: [questionId], references: [id], onDelete: Cascade)
+  user        User?        @relation("UserOptions", fields: [userId], references: [id])
+  quizAnswers QuizAnswer[] @relation("OptionAnswers")
 
   @@index([questionId])
 }
 
 model QuizAttempt {
   id             String       @id @default(uuid())
-  quiz           Quiz         @relation("QuizAttempts", fields: [quizId], references: [id])
   quizId         String
-  user           User         @relation("UserAttempts", fields: [userId], references: [id])
   userId         String
   score          Int
   totalQuestions Int
-  answers        QuizAnswer[] @relation("AttemptAnswers")
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  answers        QuizAnswer[] @relation("AttemptAnswers")
+  quiz           Quiz         @relation("QuizAttempts", fields: [quizId], references: [id])
+  user           User         @relation("UserAttempts", fields: [userId], references: [id])
 
   @@index([quizId])
   @@index([userId])
@@ -86,14 +86,14 @@ model QuizAttempt {
 
 model QuizAnswer {
   id               String      @id @default(uuid())
-  attempt          QuizAttempt @relation("AttemptAnswers", fields: [attemptId], references: [id], onDelete: Cascade)
   attemptId        String
-  question         Question    @relation("QuestionAnswers", fields: [questionId], references: [id])
   questionId       String
-  selectedOption   Option      @relation("OptionAnswers", fields: [selectedOptionId], references: [id])
   selectedOptionId String
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
+  attempt          QuizAttempt @relation("AttemptAnswers", fields: [attemptId], references: [id], onDelete: Cascade)
+  question         Question    @relation("QuestionAnswers", fields: [questionId], references: [id])
+  selectedOption   Option      @relation("OptionAnswers", fields: [selectedOptionId], references: [id])
 
   @@index([attemptId])
   @@index([questionId])

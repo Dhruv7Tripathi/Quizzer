@@ -7,7 +7,7 @@ import axios from "axios";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, BookOpen, Edit, Trash2 } from "lucide-react";
+import { Loader2, Plus, BookOpen, Trash2 } from "lucide-react";
 import Link from "next/link";
 import {
   AlertDialog,

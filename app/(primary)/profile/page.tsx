@@ -65,12 +65,17 @@ export default function ProfilePage() {
       setLoading(true)
       const response = await axios.get("/api/user/stats")
       setUserStats(response.data)
-    } catch (error: any) {
-      setError(error.response?.data?.message || "Failed to fetch user statistics")
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || "Failed to fetch user statistics quizzes");
+      } else {
+        setError("An unexpected error occurred");
+      }
     } finally {
       setLoading(false)
     }
   }
+  // setError(error.response?.data?.message || "Failed to fetch user statistics")
 
   const getInitials = (name: string) => {
     return name
@@ -277,7 +282,7 @@ export default function ProfilePage() {
                         <BookOpen className="h-10 w-10 text-muted-foreground mb-4" />
                         <h3 className="text-lg font-medium mb-2">No quiz attempts yet</h3>
                         <p className="text-muted-foreground max-w-md mb-4">
-                          You haven't attempted any quizzes yet. Start by taking a quiz to see your performance.
+                          You haven&apos;t attempted any quizzes yet. Start by taking a quiz to see your performance.
                         </p>
                         <Button asChild>
                           <Link href="/quizzes">Browse Quizzes</Link>
