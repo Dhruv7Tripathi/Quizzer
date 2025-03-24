@@ -1,13 +1,17 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-const prisma = new PrismaClient();
-export async function POST(req: NextRequest) {
+
+export async function GET(req: NextRequest) {
   try {
-    const reqBoy = await req.json();
-    const { id } = reqBoy;
+    // Extract query parameters
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
     if (!id) {
-      return NextResponse.json({ message: 'Internal Server error' }, { status: 404 })
+      return NextResponse.json({ message: "Quiz ID is required" }, { status: 400 });
     }
+
+    // Fetch quiz from database
     const quiz = await prisma.quiz.findFirst({
       where: { id },
       select: {
@@ -28,12 +32,19 @@ export async function POST(req: NextRequest) {
         },
       },
     });
-    return NextResponse.json(quiz);
+
+    // If no quiz is found, return 404
+    if (!quiz) {
+      return NextResponse.json({ message: "Quiz not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ quiz }, { status: 200 });
   } catch (error) {
-    console.log(error)
-    return NextResponse.error();
+    console.error("Error fetching quiz:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }
+
 // import { PrismaClient } from "@prisma/client";
 // import { NextRequest, NextResponse } from "next/server";
 
