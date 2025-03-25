@@ -63,7 +63,7 @@ export default function ProfilePage() {
   const fetchUserStats = async () => {
     try {
       setLoading(true)
-      const response = await axios.get("/api/user/stats")
+      const response = await axios.get("/api/quiz/user/stats")
       setUserStats(response.data)
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
