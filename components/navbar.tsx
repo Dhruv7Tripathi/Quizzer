@@ -95,3 +95,63 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+// import Link from "next/link"
+// import { Button } from "@/components/ui/button"
+// import { useSession } from 'next-auth/react';
+// import UserAccountNav from './userAccountNav';
+// import SignInButton from './SignInButton';
+// export default function LandingPage() {
+//   const { data: session } = useSession();
+//   return (
+//     <div>
+//       <header className="border-b bg-background">
+//         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+//           <div className="flex h-16 items-center justify-between">
+//             <div className="flex items-center">
+//               <Link href="/" className="flex items-center">
+//                 <span className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+//                   Quizzer
+//                 </span>
+//               </Link>
+//             </div>
+//             <nav className="hidden md:flex items-center space-x-4">
+//               <Link
+//                 href="/quizzes"
+//                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+//               >
+//                 Quizzes
+//               </Link>
+//               <Link
+//                 href="/create"
+//                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+//               >
+//                 CreateQuiz
+//               </Link>
+//               <Link
+//                 href="/about"
+//                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+//               >
+//                 About
+//               </Link>
+//             </nav>
+//             <div className="flex items-center space-x-4">
+//               <Link
+//                 href="/signin"
+//                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+//               >
+//                 Sign In
+
+//               </Link>
+//               <Button asChild>
+//                 <Link href="/quizzes">Get Started</Link>
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+//       </header>
+//     </div>
+//   );
+// }

@@ -1,0 +1,163 @@
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetFooter,
+  SheetClose,
+} from "@/components/ui/sheet"
+import { MessageSquare, Loader2 } from "lucide-react"
+import { toast } from "@/components/ui/usetoast"
+
+export default function FeedbackButton() {
+  const [feedbackType, setFeedbackType] = useState("suggestion")
+  const [message, setMessage] = useState("")
+  const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!message.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a message",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      // Reset form
+      setMessage("")
+      setEmail("")
+      setFeedbackType("suggestion")
+
+      // Show success message
+      toast({
+        title: "Feedback Submitted",
+        description: "Thank you for your feedback!",
+      })
+
+      // Close the sheet
+      setIsOpen(false)
+    } catch (error) {
+      console.error(error)
+      toast({
+        title: "Error",
+        description: "Failed to submit feedback. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button className="fixed bottom-6 right-6 rounded-full h-14 w-14 shadow-lg" size="icon">
+          <MessageSquare className="h-6 w-6" />
+          <span className="sr-only">Open feedback form</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="sm:max-w-md">
+        <SheetHeader>
+          <SheetTitle>Send Feedback</SheetTitle>
+          <SheetDescription>
+            We value your input to improve our platform. Please share your thoughts with us.
+          </SheetDescription>
+        </SheetHeader>
+        <form onSubmit={handleSubmit} className="space-y-6 py-6">
+          <div className="space-y-2">
+            <Label htmlFor="feedback-type">Feedback Type</Label>
+            <RadioGroup
+              id="feedback-type"
+              value={feedbackType}
+              onValueChange={setFeedbackType}
+              className="flex flex-col space-y-1"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="suggestion" id="suggestion" />
+                <Label htmlFor="suggestion">Suggestion</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="issue" id="issue" />
+                <Label htmlFor="issue">Issue</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="compliment" id="compliment" />
+                <Label htmlFor="compliment">Compliment</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="other" id="other" />
+                <Label htmlFor="other">Other</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="message">Message</Label>
+            <Textarea
+              id="message"
+              placeholder="Please describe your feedback in detail..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="min-h-[120px]"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">Email (optional)</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">Provide your email if you&apos;d like us to follow up with you.</p>
+          </div>
+
+          <SheetFooter className="sm:justify-between">
+            <SheetClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </SheetClose>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit Feedback"
+              )}
+            </Button>
+          </SheetFooter>
+        </form>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
