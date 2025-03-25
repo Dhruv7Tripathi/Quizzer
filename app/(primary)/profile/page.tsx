@@ -120,7 +120,6 @@ export default function ProfilePage() {
         {error && <div className="bg-destructive/15 text-destructive p-3 rounded-md mb-6">{error}</div>}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* User Profile Card */}
           <Card className="lg:col-span-1">
             <CardHeader className="flex flex-row items-center gap-4 pb-2">
               <Avatar className="h-16 w-16">
@@ -179,10 +178,7 @@ export default function ProfilePage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Stats and Activity */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Stats Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Card>
                 <CardHeader className="pb-2">
@@ -230,7 +226,6 @@ export default function ProfilePage() {
               </Card>
             </div>
 
-            {/* Tabs for Recent Activity and Performance */}
             <Tabs defaultValue="recent" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="recent">Recent Activity</TabsTrigger>
