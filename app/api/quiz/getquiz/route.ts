@@ -3,15 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    // Extract query parameters
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
     if (!id) {
       return NextResponse.json({ message: "Quiz ID is required" }, { status: 400 });
     }
-
-    // Fetch quiz from database
     const quiz = await prisma.quiz.findFirst({
       where: { id },
       select: {
@@ -32,8 +29,6 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-
-    // If no quiz is found, return 404
     if (!quiz) {
       return NextResponse.json({ message: "Quiz not found" }, { status: 404 });
     }

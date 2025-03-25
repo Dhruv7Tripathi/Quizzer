@@ -74,6 +74,8 @@ model QuizAttempt {
   userId         String
   score          Int
   totalQuestions Int
+  isCompleted    Boolean      @default(false)
+  completedAt    DateTime?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   answers        QuizAnswer[] @relation("AttemptAnswers")
@@ -87,6 +89,7 @@ model QuizAttempt {
 model QuizAnswer {
   id               String      @id @default(uuid())
   attemptId        String
+  isCorrect        Boolean
   questionId       String
   selectedOptionId String
   createdAt        DateTime    @default(now())

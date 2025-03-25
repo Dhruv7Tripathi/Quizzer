@@ -38,8 +38,8 @@ Quizzer is a dynamic and interactive quiz application built with Next.js and Typ
    DATABASE_URL=your_database_connection_string
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your_secret_key
-   GOOGLE_CLIENT_ID=your id
-   GOOGLE_CLIENT_SECRET=your secret key
+   GOOGLE_CLIENT_ID=your_id
+   GOOGLE_CLIENT_SECRET=your_secret_key
    ```
 4. Run the development server:
    ```bash

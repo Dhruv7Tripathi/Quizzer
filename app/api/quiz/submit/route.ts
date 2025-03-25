@@ -113,18 +113,23 @@ export async function POST(request: NextRequest) {
         score: correctAnswers,
         totalQuestions: quiz.questions.length,
         answers: {
-          create: answers.map((answer: AnswerSubmission) => ({
-            question: {
-              connect: {
-                id: answer.questionId
-              }
-            },
-            selectedOption: {
-              connect: {
-                id: answer.optionId
-              }
-            }
-          })),
+          create: answers.map((answer: AnswerSubmission) => {
+            const question = quiz.questions.find(q => q.id === answer.questionId);
+            const selectedOption = question?.options.find(o => o.id === answer.optionId);
+            return {
+              question: {
+                connect: {
+                  id: answer.questionId
+                }
+              },
+              selectedOption: {
+                connect: {
+                  id: answer.optionId
+                }
+              },
+              isCorrect: selectedOption?.isCorrect || false
+            };
+          }),
         },
       },
       include: {
