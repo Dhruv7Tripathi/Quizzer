@@ -35,11 +35,11 @@ const Navbar = () => {
               <span className="text-2xl font-bold">Quizzer</span>
             </Link>
           </div>
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <AnchorNav
                 key={item.name + item.href}
-                activeClassName="text-black dark:text-white font-semibold"
+                activeClassName="text-foreground hover:text-foreground transition-colors"
                 absolute
                 href={item.href}
               >
