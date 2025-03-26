@@ -1,13 +1,11 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
   SheetContent,
@@ -17,59 +15,60 @@ import {
   SheetTrigger,
   SheetFooter,
   SheetClose,
-} from "@/components/ui/sheet"
-import { MessageSquare, Loader2 } from "lucide-react"
-import { toast } from "@/components/ui/usetoast"
+} from "@/components/ui/sheet";
+import { MessageSquare, Loader2, Link as LucideLink } from "lucide-react";
+import { toast } from "@/components/ui/usetoast";
+import Link from "next/link";
 
 export default function FeedbackButton() {
-  const [feedbackType, setFeedbackType] = useState("suggestion")
-  const [message, setMessage] = useState("")
-  const [email, setEmail] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  const [feedbackType, setFeedbackType] = useState("suggestion");
+  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!message.trim()) {
       toast({
         title: "Error",
         description: "Please enter a message",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Reset form
-      setMessage("")
-      setEmail("")
-      setFeedbackType("suggestion")
+      setMessage("");
+      setEmail("");
+      setFeedbackType("suggestion");
 
       // Show success message
       toast({
         title: "Feedback Submitted",
         description: "Thank you for your feedback!",
-      })
+      });
 
       // Close the sheet
-      setIsOpen(false)
+      setIsOpen(false);
     } catch (error) {
-      console.error(error)
+      console.error(error);
       toast({
         title: "Error",
         description: "Failed to submit feedback. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -95,22 +94,17 @@ export default function FeedbackButton() {
               onValueChange={setFeedbackType}
               className="flex flex-col space-y-1"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="suggestion" id="suggestion" />
-                <Label htmlFor="suggestion">Suggestion</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="issue" id="issue" />
-                <Label htmlFor="issue">Issue</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="compliment" id="compliment" />
-                <Label htmlFor="compliment">Compliment</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="other" id="other" />
-                <Label htmlFor="other">Other</Label>
-              </div>
+              {[
+                { value: "suggestion", label: "Suggestion" },
+                { value: "issue", label: "Issue" },
+                { value: "compliment", label: "Compliment" },
+                { value: "other", label: "Other" },
+              ].map(({ value, label }) => (
+                <div key={value} className="flex items-center space-x-2">
+                  <RadioGroupItem value={value} id={value} />
+                  <Label htmlFor={value}>{label}</Label>
+                </div>
+              ))}
             </RadioGroup>
           </div>
 
@@ -156,8 +150,17 @@ export default function FeedbackButton() {
             </Button>
           </SheetFooter>
         </form>
+        <div className="flex items-center space-x-2 mt-4 md:mt-0">
+          <span className="text-sm text-foreground">Powered by </span>
+          <Link
+            href="https://github.com/Dhruv7Tripathi/Quizzer"
+            target="_blank"
+            className="text-sm font-medium hover:text-foreground transition-colors"
+          >
+            Quizzer
+          </Link>
+        </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
-

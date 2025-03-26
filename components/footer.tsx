@@ -1,25 +1,25 @@
 "use client"
 import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 const Footer = () => {
-  const [stars, setStars] = useState(0)
+  // const [stars, setStars] = useState(0)
 
-  useEffect(() => {
-    const fetchGitHubStars = async () => {
-      try {
-        const response = await fetch(
-          'https://api.github.com/repos/Dhruv7Tripathi/Quizzer'
-        )
-        const data = await response.json()
-        setStars(data.stargazers_count)
-      } catch (error) {
-        console.error('Failed to fetch GitHub stars', error)
-      }
-    }
+  // useEffect(() => {
+  //   const fetchGitHubStars = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         'https://api.github.com/repos/Dhruv7Tripathi/Quizzer'
+  //       )
+  //       const data = await response.json()
+  //       setStars(data.stargazers_count)
+  //     } catch (error) {
+  //       console.error('Failed to fetch GitHub stars', error)
+  //     }
+  //   }
 
-    fetchGitHubStars()
-  }, [])
+  //   fetchGitHubStars()
+  // }, [])
 
   return (
     <div className='bg-white'>
@@ -30,7 +30,7 @@ const Footer = () => {
               <div className="flex items-center space-x-2 mb-4">
                 <h3 className="font-semibold text-lg">Quizzer</h3>
                 <Link
-                  href="https://github.com/Dhruv7Tripathi/QuizMaster"
+                  href="https://github.com/Dhruv7Tripathi/Quizzer"
                   target="_blank"
                   className="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded-md text-sm hover:bg-gray-200 transition-colors"
                 >
@@ -48,7 +48,7 @@ const Footer = () => {
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                   </svg>
                   <span>Star On GitHub</span>
-                  <span className="bg-gray-200 px-1.5 rounded-md">{stars}</span>
+                  {/* <span className="bg-gray-200 px-1.5 rounded-md">{stars}</span> */}
                 </Link>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -56,7 +56,6 @@ const Footer = () => {
               </p>
             </div>
 
-            {/* Features Column */}
             <div>
               <h3 className="font-semibold text-lg mb-4">Features</h3>
               <ul className="space-y-2 text-sm">
@@ -148,16 +147,7 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} QuizMaster. All rights reserved.
             </p>
-            <div className="flex items-center space-x-2 mt-4 md:mt-0">
-              <span className="text-sm text-muted-foreground">Powered by</span>
-              <Link
-                href="https://github.com/Dhruv7Tripathi/Quizzer"
-                target="_blank"
-                className="text-sm font-medium hover:text-foreground transition-colors"
-              >
-                QuizMaster
-              </Link>
-            </div>
+
           </div>
         </div>
       </footer>
