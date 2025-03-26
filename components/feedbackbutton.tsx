@@ -17,9 +17,9 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { MessageSquare, Loader2 } from "lucide-react";
-// import Link from "next/link";
 import { toast } from "@/components/ui/usetoast";
 import Link from "next/link";
+import axios from "axios";
 
 export default function FeedbackButton() {
   const [feedbackType, setFeedbackType] = useState("suggestion");
@@ -31,6 +31,7 @@ export default function FeedbackButton() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate message is not empty
     if (!message.trim()) {
       toast({
         title: "Error",
@@ -43,8 +44,14 @@ export default function FeedbackButton() {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await axios.post("/api/feedback", {
+        feedbackType,
+        message,
+        email: email.trim() || undefined, // Send undefined if email is empty
+      });
+      if (response.status !== 200) {
+        throw new Error("Failed to submit feedback. Please try again.");
+      }
 
       // Reset form
       setMessage("");
@@ -61,9 +68,15 @@ export default function FeedbackButton() {
       setIsOpen(false);
     } catch (error) {
       console.error(error);
+
+      // Check if there's a response from the server
+      const errorMessage = axios.isAxiosError(error) && error.response
+        ? error.response.data.message
+        : "Failed to submit feedback. Please try again.";
+
       toast({
         title: "Error",
-        description: "Failed to submit feedback. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
