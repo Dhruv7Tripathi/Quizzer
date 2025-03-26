@@ -27,7 +27,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
+              <div className="flex  items-center space-x-2 mb-4">
                 <h3 className="font-semibold text-lg">Quizzer</h3>
                 <Link
                   href="https://github.com/Dhruv7Tripathi/Quizzer"
@@ -56,7 +56,7 @@ const Footer = () => {
               </p>
             </div>
 
-            <div>
+            <div className='space-y-8'>
               <h3 className="font-semibold text-lg mb-4">Features</h3>
               <ul className="space-y-2 text-sm">
                 <li>

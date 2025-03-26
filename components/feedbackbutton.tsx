@@ -16,7 +16,8 @@ import {
   SheetFooter,
   SheetClose,
 } from "@/components/ui/sheet";
-import { MessageSquare, Loader2, Link as LucideLink } from "lucide-react";
+import { MessageSquare, Loader2 } from "lucide-react";
+// import Link from "next/link";
 import { toast } from "@/components/ui/usetoast";
 import Link from "next/link";
 
