@@ -86,11 +86,13 @@ export default function CreateQuiz() {
         questions: data.questions,
       })
 
+
       if (response.data.quiz) {
         router.push(`/quizzes`)
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
+        console.log(error);
         setError(error.response?.data?.message || "Failed to create quiz");
       } else {
         setError("An unexpected error occurred");

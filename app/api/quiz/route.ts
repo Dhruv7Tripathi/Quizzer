@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+// import prisma from "@lib/db";
+import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +13,20 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    console.log("Existing User:", existingUser);
+    console.log("Existing User");
+    if (!existingUser) {
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 500 }
+      );
+    }
+
     for (const [index, question] of questions.entries()) {
       if (!question.text || !Array.isArray(question.options) || question.options.length !== 2) {
         return NextResponse.json(
@@ -69,13 +84,11 @@ export async function POST(request: NextRequest) {
       quiz,
     });
   } catch (error: unknown) {
-    console.error("Error creating quiz:", error instanceof Error ? error.message : String(error));
+    console.log("Error creating quiz:", error instanceof Error ? error.message : String(error));
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
 // import { PrismaClient } from "@prisma/client";
