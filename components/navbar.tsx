@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { Menu, X, Star, Home, PlusCircle, Info } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import UserAccountNav from './userAccountNav';
 import SignInButton from './SignInButton';
 
@@ -15,23 +15,18 @@ const Navbar = () => {
     {
       name: 'Home',
       href: '/',
-      icon: <Home className="h-5 w-5 mr-2" />
+      // icon: <Home className="h-6 w-6" />,
     },
     {
-      name: 'Quizzes',
+      name: 'Dashboard',
       href: '/quizzes',
-      icon: <Star className="h-5 w-5 mr-2" />
+      // icon: <PlusCircle className="h-6 w-6" />,
     },
     {
-      name: 'Create Quiz',
-      href: '/create',
-      icon: <PlusCircle className="h-5 w-5 mr-2" />
+      name: 'Profile',
+      href: '/profile',
+      // icon: <Info className="h-6 w-6" />,
     },
-    {
-      name: 'About',
-      href: '/about',
-      icon: <Info className="h-5 w-5 mr-2" />
-    }
   ];
 
   const toggleMenu = () => {
@@ -70,12 +65,12 @@ const Navbar = () => {
                 href={item.href}
                 className="flex items-center text-muted-foreground hover:text-foreground transition-colors group"
               >
-                {item.icon}
+                {/* {item.icon} */}
                 <span className="group-hover:underline">{item.name}</span>
               </Link>
             ))}
 
-            <Link
+            {/* <Link
               href="https://github.com/Dhruv7Tripathi/Quizzer"
               target="_blank"
               className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-md text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors group"
@@ -95,7 +90,7 @@ const Navbar = () => {
                 <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
               </svg>
               <span className="group-hover:underline">Star on GitHub</span>
-            </Link>
+            </Link> */}
 
             <div className="flex items-center">
               {session?.user ? (
@@ -131,7 +126,7 @@ const Navbar = () => {
                   className="flex items-center px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group"
                   onClick={() => setIsOpen(false)}
                 >
-                  {item.icon}
+                  {/* {item.icon} */}
                   {item.name}
                 </Link>
               ))}
