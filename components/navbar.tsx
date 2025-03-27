@@ -75,7 +75,6 @@ const Navbar = () => {
               </Link>
             ))}
 
-            {/* GitHub Star Button */}
             <Link
               href="https://github.com/Dhruv7Tripathi/Quizzer"
               target="_blank"
@@ -98,7 +97,6 @@ const Navbar = () => {
               <span className="group-hover:underline">Star on GitHub</span>
             </Link>
 
-            {/* Authentication Section */}
             <div className="flex items-center">
               {session?.user ? (
                 <UserAccountNav user={session.user} />
@@ -108,7 +106,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Mobile Menu Toggle */}
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
@@ -124,7 +121,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden absolute left-0 right-0 bg-white dark:bg-zinc-950/95 backdrop-blur-lg shadow-lg">
             <div className="px-2 pt-2 pb-3 space-y-1">

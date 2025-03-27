@@ -3,15 +3,15 @@ import Link from "next/link";
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-white text-black">
       <div className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-4xl font-bold mb-8 text-center">Privacy Policy</h1>
 
-        <div className="space-y-8 text-gray-300">
+        <div className="space-y-8 text-black">
           <section>
-            <h2 className="text-2xl font-semibold mb-4 text-white">1. Information We Collect</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-black">1. Information We Collect</h2>
             <div className="space-y-4">
-              <h3 className="text-xl font-medium text-white">Personal Information</h3>
+              <h3 className="text-xl font-medium text-black">Personal Information</h3>
               <p className="leading-relaxed">
                 We collect information that you provide directly to us, including:
               </p>
@@ -25,7 +25,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4 text-white">2. How We Use Your Information</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-black">2. How We Use Your Information</h2>
             <p className="leading-relaxed">
               We use the information we collect to:
             </p>
@@ -39,7 +39,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4 text-white">3. Information Sharing</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-black">3. Information Sharing</h2>
             <p className="leading-relaxed">
               We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:
             </p>
@@ -52,14 +52,14 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4 text-white">4. Data Security</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-black">4. Data Security</h2>
             <p className="leading-relaxed">
               We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet is 100% secure.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4 text-white">5. Your Rights</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-black">5. Your Rights</h2>
             <p className="leading-relaxed">
               You have the right to:
             </p>
@@ -75,7 +75,7 @@ export default function PrivacyPolicy() {
 
         <div className="mt-12 text-center">
           <Link href="/">
-            <Button variant="outline" className="bg-transparent border-white/30 text-white hover:bg-white/10">
+            <Button variant="outline" className="bg-transparent border-white/30 text-black hover:bg-white/10">
               Back to Home
             </Button>
           </Link>

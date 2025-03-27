@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link'
 import React from 'react'
-
+import Image from 'next/image'
 const Footer = () => {
   // const [stars, setStars] = useState(0)
 
@@ -27,33 +27,16 @@ const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex  items-center space-x-2 mb-4">
-                <h3 className="font-semibold text-lg">Quizzer</h3>
-                <Link
-                  href="https://github.com/Dhruv7Tripathi/Quizzer"
-                  target="_blank"
-                  className="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded-md text-sm hover:bg-gray-200 transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-                  </svg>
-                  <span>Star On GitHub</span>
-                  {/* <span className="bg-gray-200 px-1.5 rounded-md">{stars}</span> */}
+              <div className="mb-4 flex">
+                <Link href="/" className="flex items-center space-x-1">
+                  <Image src="/q.webp" width={30} height={30} priority={false} alt="Logo" unoptimized={true} className="rounded-xl" />
+                  <span className="text-2xl font-extrabold text-black dark:text-white ">Quizzer</span>
                 </Link>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Create, share, and analyze interactive quizzes for education and engagement.
-              </p>
+              <div className="mt-2">
+                Building in public at
+                <a className="dark:text-emerald-500 pl-1 font-medium text-neutral-600" target="__blank" href="https://github.com/dhruv7tripathi">@dhruv7tripathi</a>
+              </div>
             </div>
 
             <div className='space-y-8'>
@@ -119,7 +102,6 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Others Column */}
             <div>
               <h3 className="font-semibold text-lg mb-4">Others</h3>
               <ul className="space-y-2 text-sm">
@@ -142,10 +124,9 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Footer Bottom */}
           <div className="border-t border-border/40 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} QuizMaster. All rights reserved.
+              © {new Date().getFullYear()} Quizzer. All rights reserved.
             </p>
 
           </div>
@@ -159,12 +140,12 @@ export default Footer
 // <div className="border-t border-neutral-100 dark:border-white/[0.1] px-8 py-20 bg-white dark:bg-black">
 //   <div className="max-w-[87rem] mx-auto text-sm px-4 text-gray-400 flex sm:flex-row flex-col justify-between items-start ">
 //     <div>
-//       <div className="mb-4 flex">
-//         <Link href="/" className="flex items-center space-x-1">
-//           <Image src="/q.webp" width={30} height={30} priority={false} alt="Logo" unoptimized={true} className="rounded-xl" />
-//           <span className="text-2xl font-extrabold text-black dark:text-white ">Quizzer</span>
-//         </Link>
-//       </div>
+// <div className="mb-4 flex">
+//   <Link href="/" className="flex items-center space-x-1">
+//     <Image src="/q.webp" width={30} height={30} priority={false} alt="Logo" unoptimized={true} className="rounded-xl" />
+//     <span className="text-2xl font-extrabold text-black dark:text-white ">Quizzer</span>
+//   </Link>
+// </div>
 //       <div className="mt-2">
 //         Building in public at
 //         <a className="dark:text-emerald-500 pl-1 font-medium text-neutral-600" target="__blank" href="https://github.com/dhruv7tripathi">@dhruv7tripathi</a>

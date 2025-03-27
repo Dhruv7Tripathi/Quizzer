@@ -13,10 +13,8 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 md:pr-12 mb-10 md:mb-0">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                Create and Share{" "}
-                <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                  Interactive Quizzes
-                </span>
+                Create and Share Interactive Quizzes{" "}
+
               </h1>
               <p className="text-xl text-muted-foreground mb-8 max-w-md">
                 Engage your audience with beautifully designed quizzes. Perfect for educators, content creators, and
@@ -33,7 +31,7 @@ export default function Home() {
             </div>
             <div className="md:w-1/2">
               <div className="relative">
-                <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary/20 to-purple-600/20 blur-lg"></div>
+                <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary/20 to-white blur-lg"></div>
                 <div className="relative bg-background border rounded-lg shadow-lg overflow-hidden">
                   <Image
                     src="/logo.webp"
