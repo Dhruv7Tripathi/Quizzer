@@ -108,7 +108,7 @@ export default function QuizzesPage() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold">My Quizzes</h1>
+            <h1 className="text-3xl font-bold">All Quizzes</h1>
             <p className="text-gray-600 mt-1">Manage your created quizzes</p>
           </div>
           <Button asChild>

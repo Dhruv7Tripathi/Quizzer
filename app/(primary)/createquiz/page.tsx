@@ -113,13 +113,11 @@ export default function CreateQuiz() {
     }
   }
   const handleCorrectOptionChange = (questionIndex: number, optionIndex: number) => {
-    // Create a copy of the current options
     const currentOptions = fields[questionIndex].options.map((option, index) => ({
       ...option,
       isCorrect: index === optionIndex
     }));
 
-    // Update the form values
     setValue(`questions.${questionIndex}.options`, currentOptions);
   }
 
@@ -321,7 +319,5 @@ export default function CreateQuiz() {
   )
 }
 
-function setValue(arg0: string, currentOptions: { isCorrect: boolean; text: string }[]) {
-  throw new Error("Function not implemented.")
-}
+// Removed redundant setValue function
 
