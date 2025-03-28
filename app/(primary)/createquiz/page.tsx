@@ -9,9 +9,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { PlusCircle, MinusCircle, Loader2 } from "lucide-react"
+import { PlusCircle, MinusCircle, Loader2, CheckCircle2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { cn } from "@/lib/utils"
 
 interface Option {
   text: string
@@ -40,6 +41,7 @@ export default function CreateQuiz() {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormData>({
     defaultValues: {
       title: "",
@@ -49,7 +51,9 @@ export default function CreateQuiz() {
         {
           text: "",
           options: [
-            { text: "", isCorrect: true },
+            { text: "", isCorrect: false },
+            { text: "", isCorrect: false },
+            { text: "", isCorrect: false },
             { text: "", isCorrect: false },
           ],
         },
@@ -73,6 +77,13 @@ export default function CreateQuiz() {
   }, [status, router])
 
   const onSubmit = async (data: FormData) => {
+    const isValid = data.questions.every(question =>
+      question.options.filter(option => option.isCorrect).length === 1
+    )
+    if (!isValid) {
+      setError("Each question must have exactly one correct option")
+      return
+    }
     setLoading(true)
     setError("")
 
@@ -101,6 +112,29 @@ export default function CreateQuiz() {
       setLoading(false)
     }
   }
+  const handleCorrectOptionChange = (questionIndex: number, optionIndex: number) => {
+    // Create a copy of the current options
+    const currentOptions = fields[questionIndex].options.map((option, index) => ({
+      ...option,
+      isCorrect: index === optionIndex
+    }));
+
+    // Update the form values
+    setValue(`questions.${questionIndex}.options`, currentOptions);
+  }
+
+  const appendQuestion = () => {
+    append({
+      text: "",
+      options: [
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+      ],
+    })
+  }
+
 
   if (status === "loading") {
     return (
@@ -183,15 +217,7 @@ export default function CreateQuiz() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      append({
-                        text: "",
-                        options: [
-                          { text: "", isCorrect: true },
-                          { text: "", isCorrect: false },
-                        ],
-                      })
-                    }
+                    onClick={appendQuestion}
                     className="flex items-center gap-2"
                   >
                     <PlusCircle className="h-4 w-4" />
@@ -199,29 +225,29 @@ export default function CreateQuiz() {
                   </Button>
                 </div>
 
-                {fields.map((field, index) => (
+                {fields.map((field, questionIndex) => (
                   <Card key={field.id}>
                     <CardContent className="pt-6">
                       <div className="space-y-4">
                         <div className="flex gap-4">
                           <div className="flex-1">
-                            <Label htmlFor={`question-${index}`}>Question {index + 1}</Label>
+                            <Label htmlFor={`question-${questionIndex}`}>Question {questionIndex + 1}</Label>
                             <Input
-                              id={`question-${index}`}
-                              {...register(`questions.${index}.text`, {
+                              id={`question-${questionIndex}`}
+                              {...register(`questions.${questionIndex}.text`, {
                                 required: "Question text is required",
                               })}
                               placeholder="Enter your question"
                             />
-                            {errors.questions?.[index]?.text && (
-                              <p className="text-sm text-destructive">{errors.questions[index]?.text?.message}</p>
+                            {errors.questions?.[questionIndex]?.text && (
+                              <p className="text-sm text-destructive">{errors.questions[questionIndex]?.text?.message}</p>
                             )}
                           </div>
                           <Button
                             type="button"
                             variant="destructive"
                             size="icon"
-                            onClick={() => remove(index)}
+                            onClick={() => remove(questionIndex)}
                             disabled={fields.length === 1}
                             className="mt-8"
                           >
@@ -230,29 +256,44 @@ export default function CreateQuiz() {
                           </Button>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {[0, 1].map((optionIndex) => (
+                        <div className="grid grid-cols-2 gap-4">
+                          {[0, 1, 2, 3].map((optionIndex) => (
                             <div key={optionIndex} className="space-y-2">
-                              <Label htmlFor={`option-${index}-${optionIndex}`}>
-                                Option {optionIndex + 1} ({optionIndex === 0 ? "True" : "False"})
+                              <Label htmlFor={`option-${questionIndex}-${optionIndex}`}>
+                                Option {optionIndex + 1}
                               </Label>
-                              <Input
-                                id={`option-${index}-${optionIndex}`}
-                                {...register(`questions.${index}.options.${optionIndex}.text`, {
-                                  required: "Option text is required",
-                                })}
-                                placeholder={`Enter option ${optionIndex + 1}`}
-                              />
-                              {errors.questions?.[index]?.options?.[optionIndex]?.text && (
+                              <div className="flex items-center space-x-2">
+                                <Input
+                                  id={`option-${questionIndex}-${optionIndex}`}
+                                  {...register(`questions.${questionIndex}.options.${optionIndex}.text`, {
+                                    required: "Option text is required",
+                                  })}
+                                  placeholder={`Enter option ${optionIndex + 1}`}
+                                  className={cn(
+                                    "flex-1",
+                                    field.options[optionIndex].isCorrect && "border-2 border-green-500"
+                                  )}
+                                />
+                                <Button
+                                  type="button"
+                                  variant={field.options[optionIndex].isCorrect ? "default" : "outline"}
+                                  size="icon"
+                                  onClick={() => handleCorrectOptionChange(questionIndex, optionIndex)}
+                                  className="w-10 h-10"
+                                >
+                                  <CheckCircle2 className={cn(
+                                    "h-5 w-5",
+                                    field.options[optionIndex].isCorrect
+                                      ? "text-white"
+                                      : "text-muted-foreground"
+                                  )} />
+                                </Button>
+                              </div>
+                              {errors.questions?.[questionIndex]?.options?.[optionIndex]?.text && (
                                 <p className="text-sm text-destructive">
-                                  {errors.questions[index]?.options?.[optionIndex]?.text?.message}
+                                  {errors.questions[questionIndex]?.options?.[optionIndex]?.text?.message}
                                 </p>
                               )}
-                              <input
-                                type="hidden"
-                                {...register(`questions.${index}.options.${optionIndex}.isCorrect`)}
-                                value={optionIndex === 0 ? "true" : "false"}
-                              />
                             </div>
                           ))}
                         </div>
@@ -278,5 +319,9 @@ export default function CreateQuiz() {
       </div>
     </div>
   )
+}
+
+function setValue(arg0: string, currentOptions: { isCorrect: boolean; text: string }[]) {
+  throw new Error("Function not implemented.")
 }
 
