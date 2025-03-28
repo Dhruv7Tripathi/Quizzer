@@ -37,7 +37,6 @@ const Navbar = () => {
     <nav className="z-50 sticky top-0 w-full dark:bg-zinc-950/90 bg-white/95 shadow-lg shadow-neutral-600/5 backdrop-blur-xl border-b border-primary/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo Section */}
           <div className="flex items-center">
             <Link
               href="/"
