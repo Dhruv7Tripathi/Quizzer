@@ -115,10 +115,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {error && <div className="bg-destructive/15 text-destructive p-3 rounded-md mb-6">{error}</div>}
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-1">
             <CardHeader className="flex flex-row items-center gap-4 pb-2">

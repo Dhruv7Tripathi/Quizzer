@@ -92,7 +92,6 @@ export async function POST(request: NextRequest) {
   try {
     const { userId, title, description, category, difficultyLevel, questions } = await request.json();
 
-    // Validate required fields
     if (!userId || !title || !description || !category || !difficultyLevel || !Array.isArray(questions) || questions.length === 0) {
       return NextResponse.json(
         { error: "Missing or invalid required fields (userId, title, description, category, difficultyLevel, questions)" },
@@ -100,7 +99,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user exists
     const existingUser = await prisma.user.findUnique({ where: { id: userId } });
     if (!existingUser) {
       return NextResponse.json(
@@ -109,7 +107,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate questions and options
     for (const [index, question] of questions.entries()) {
       if (!question.text || !Array.isArray(question.options) || question.options.length !== 4) {
         return NextResponse.json(
@@ -129,7 +126,6 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Ensure exactly one correct option
       const correctOptionsCount = question.options.filter((option: { isCorrect: boolean; }) => option.isCorrect).length;
       if (correctOptionsCount !== 1) {
         return NextResponse.json(
@@ -139,7 +135,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create the quiz and associated questions in a transaction
     const quiz = await prisma.quiz.create({
       data: {
         title,

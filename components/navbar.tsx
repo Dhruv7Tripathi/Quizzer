@@ -15,17 +15,14 @@ const Navbar = () => {
     {
       name: 'Home',
       href: '/',
-      // icon: <Home className="h-6 w-6" />,
     },
     {
       name: 'Dashboard',
       href: '/quizzes',
-      // icon: <PlusCircle className="h-6 w-6" />,
     },
     {
       name: 'Profile',
       href: '/profile',
-      // icon: <Info className="h-6 w-6" />,
     },
   ];
 

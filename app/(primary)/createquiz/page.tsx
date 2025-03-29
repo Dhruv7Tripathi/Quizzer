@@ -42,6 +42,7 @@ export default function CreateQuiz() {
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<FormData>({
     defaultValues: {
       title: "",
@@ -97,7 +98,6 @@ export default function CreateQuiz() {
         questions: data.questions,
       })
 
-
       if (response.data.quiz) {
         router.push(`/quizzes`)
       }
@@ -112,13 +112,16 @@ export default function CreateQuiz() {
       setLoading(false)
     }
   }
+
   const handleCorrectOptionChange = (questionIndex: number, optionIndex: number) => {
-    const currentOptions = fields[questionIndex].options.map((option, index) => ({
+    // For the current question, set only the clicked option to be correct
+    const questionOptions = getValues(`questions.${questionIndex}.options`);
+    const updatedOptions = questionOptions.map((option, index) => ({
       ...option,
       isCorrect: index === optionIndex
     }));
 
-    setValue(`questions.${questionIndex}.options`, currentOptions);
+    setValue(`questions.${questionIndex}.options`, updatedOptions);
   }
 
   const appendQuestion = () => {
@@ -132,7 +135,6 @@ export default function CreateQuiz() {
       ],
     })
   }
-
 
   if (status === "loading") {
     return (
@@ -148,7 +150,7 @@ export default function CreateQuiz() {
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">Create New Quiz</CardTitle>
-            <CardDescription className="text-center">Create a quiz with true/false questions</CardDescription>
+            <CardDescription className="text-center">Create a quiz with multiple-choice questions</CardDescription>
           </CardHeader>
           <CardContent>
             {error && <div className="bg-destructive/15 text-destructive p-3 rounded-md mb-6">{error}</div>}
@@ -223,82 +225,90 @@ export default function CreateQuiz() {
                   </Button>
                 </div>
 
-                {fields.map((field, questionIndex) => (
-                  <Card key={field.id}>
-                    <CardContent className="pt-6">
-                      <div className="space-y-4">
-                        <div className="flex gap-4">
-                          <div className="flex-1">
-                            <Label htmlFor={`question-${questionIndex}`}>Question {questionIndex + 1}</Label>
-                            <Input
-                              id={`question-${questionIndex}`}
-                              {...register(`questions.${questionIndex}.text`, {
-                                required: "Question text is required",
-                              })}
-                              placeholder="Enter your question"
-                            />
-                            {errors.questions?.[questionIndex]?.text && (
-                              <p className="text-sm text-destructive">{errors.questions[questionIndex]?.text?.message}</p>
-                            )}
-                          </div>
-                          <Button
-                            type="button"
-                            variant="destructive"
-                            size="icon"
-                            onClick={() => remove(questionIndex)}
-                            disabled={fields.length === 1}
-                            className="mt-8"
-                          >
-                            <MinusCircle className="h-4 w-4" />
-                            <span className="sr-only">Remove question</span>
-                          </Button>
-                        </div>
+                {fields.map((field, questionIndex) => {
+                  // Get current options for this question
+                  const questionOptions = getValues(`questions.${questionIndex}.options`) || [];
 
-                        <div className="grid grid-cols-2 gap-4">
-                          {[0, 1, 2, 3].map((optionIndex) => (
-                            <div key={optionIndex} className="space-y-2">
-                              <Label htmlFor={`option-${questionIndex}-${optionIndex}`}>
-                                Option {optionIndex + 1}
-                              </Label>
-                              <div className="flex items-center space-x-2">
-                                <Input
-                                  id={`option-${questionIndex}-${optionIndex}`}
-                                  {...register(`questions.${questionIndex}.options.${optionIndex}.text`, {
-                                    required: "Option text is required",
-                                  })}
-                                  placeholder={`Enter option ${optionIndex + 1}`}
-                                  className={cn(
-                                    "flex-1",
-                                    field.options[optionIndex].isCorrect && "border-2 border-green-500"
-                                  )}
-                                />
-                                <Button
-                                  type="button"
-                                  variant={field.options[optionIndex].isCorrect ? "default" : "outline"}
-                                  size="icon"
-                                  onClick={() => handleCorrectOptionChange(questionIndex, optionIndex)}
-                                  className="w-10 h-10"
-                                >
-                                  <CheckCircle2 className={cn(
-                                    "h-5 w-5",
-                                    field.options[optionIndex].isCorrect
-                                      ? "text-white"
-                                      : "text-muted-foreground"
-                                  )} />
-                                </Button>
-                              </div>
-                              {errors.questions?.[questionIndex]?.options?.[optionIndex]?.text && (
-                                <p className="text-sm text-destructive">
-                                  {errors.questions[questionIndex]?.options?.[optionIndex]?.text?.message}
-                                </p>
+                  return (
+                    <Card key={field.id}>
+                      <CardContent className="pt-6">
+                        <div className="space-y-4">
+                          <div className="flex gap-4">
+                            <div className="flex-1">
+                              <Label htmlFor={`question-${questionIndex}`}>Question {questionIndex + 1}</Label>
+                              <Input
+                                id={`question-${questionIndex}`}
+                                {...register(`questions.${questionIndex}.text`, {
+                                  required: "Question text is required",
+                                })}
+                                placeholder="Enter your question"
+                              />
+                              {errors.questions?.[questionIndex]?.text && (
+                                <p className="text-sm text-destructive">{errors.questions[questionIndex]?.text?.message}</p>
                               )}
                             </div>
-                          ))}
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="icon"
+                              onClick={() => remove(questionIndex)}
+                              disabled={fields.length === 1}
+                              className="mt-8"
+                            >
+                              <MinusCircle className="h-4 w-4" />
+                              <span className="sr-only">Remove question</span>
+                            </Button>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            {[0, 1, 2, 3].map((optionIndex) => {
+                              // Check if this option is correct
+                              const isCorrect = questionOptions[optionIndex]?.isCorrect || false;
+
+                              return (
+                                <div key={optionIndex} className="space-y-2">
+                                  <Label htmlFor={`option-${questionIndex}-${optionIndex}`}>
+                                    Option {optionIndex + 1}
+                                  </Label>
+                                  <div className="flex items-center space-x-2">
+                                    <Input
+                                      id={`option-${questionIndex}-${optionIndex}`}
+                                      {...register(`questions.${questionIndex}.options.${optionIndex}.text`, {
+                                        required: "Option text is required",
+                                      })}
+                                      placeholder={`Enter option ${optionIndex + 1}`}
+                                      className={cn(
+                                        "flex-1",
+                                        isCorrect && "border-2 border-green-500"
+                                      )}
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant={isCorrect ? "default" : "outline"}
+                                      size="icon"
+                                      onClick={() => handleCorrectOptionChange(questionIndex, optionIndex)}
+                                      className="w-10 h-10"
+                                    >
+                                      <CheckCircle2 className={cn(
+                                        "h-5 w-5",
+                                        isCorrect ? "text-white" : "text-muted-foreground"
+                                      )} />
+                                    </Button>
+                                  </div>
+                                  {errors.questions?.[questionIndex]?.options?.[optionIndex]?.text && (
+                                    <p className="text-sm text-destructive">
+                                      {errors.questions[questionIndex]?.options?.[optionIndex]?.text?.message}
+                                    </p>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>
@@ -318,6 +328,3 @@ export default function CreateQuiz() {
     </div>
   )
 }
-
-// Removed redundant setValue function
-
