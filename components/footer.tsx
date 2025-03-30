@@ -117,8 +117,8 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="border-t border-border/40 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="border-t border-border/40 mt-16 pt-4 justify-center items-center text-center">
+            <p className="text-sm  text-muted-foreground">
               © {new Date().getFullYear()} Quizzer. All rights reserved.
             </p>
 

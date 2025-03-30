@@ -59,7 +59,7 @@ export default function CreateQuiz() {
           ],
         },
       ],
-      difficultyLevel: "Easy",
+      difficultyLevel: "",
     },
   })
 
@@ -145,7 +145,7 @@ export default function CreateQuiz() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <Card>
           <CardHeader>
@@ -262,7 +262,6 @@ export default function CreateQuiz() {
 
                           <div className="grid grid-cols-2 gap-4">
                             {[0, 1, 2, 3].map((optionIndex) => {
-                              // Check if this option is correct
                               const isCorrect = questionOptions[optionIndex]?.isCorrect || false;
 
                               return (

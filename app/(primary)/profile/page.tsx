@@ -4,13 +4,13 @@ import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar } from "lucide-react"
+import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar, Clock, Edit, Trash2, Plus } from "lucide-react"
 import Link from "next/link"
 
 interface QuizAttempt {
@@ -22,6 +22,16 @@ interface QuizAttempt {
   score: number
   totalQuestions: number
   completedAt: string
+}
+
+interface Quiz {
+  id: string
+  title: string
+  description: string
+  category: string
+  difficultyLevel: string
+  createdAt: string
+  questionsCount: number
 }
 
 interface UserStats {
@@ -43,9 +53,11 @@ interface UserStats {
 }
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession()
+  const session = useSession()
+  const { data, status } = session || { data: null, status: "loading" }
   const router = useRouter()
   const [userStats, setUserStats] = useState<UserStats | null>(null)
+  const [quizzes, setQuizzes] = useState<Quiz[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
 
@@ -57,8 +69,18 @@ export default function ProfilePage() {
 
     if (status === "authenticated") {
       fetchUserStats()
+      fetchUserQuizzes()
     }
   }, [status, router])
+
+  const fetchUserQuizzes = async () => {
+    try {
+      const response = await axios.get("/api/quiz/allquiz")
+      setQuizzes(response.data.quizzes || [])
+    } catch (error) {
+      console.error("Failed to fetch quizzes", error)
+    }
+  }
 
   const fetchUserStats = async () => {
     try {
@@ -67,12 +89,22 @@ export default function ProfilePage() {
       setUserStats(response.data)
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || "Failed to fetch user statistics quizzes");
+        setError(error.response?.data?.message || "Failed to fetch user statistics")
       } else {
-        setError("An unexpected error occurred");
+        setError("An unexpected error occurred")
       }
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDeleteQuiz = async (quizId: string) => {
+    try {
+      await axios.delete(`/api/quiz/delete/${quizId}`)
+      fetchUserQuizzes()
+    } catch (error) {
+      console.error("Failed to delete quiz", error)
+      setError("Failed to delete quiz")
     }
   }
 
@@ -121,12 +153,12 @@ export default function ProfilePage() {
           <Card className="lg:col-span-1">
             <CardHeader className="flex flex-row items-center gap-4 pb-2">
               <Avatar className="h-16 w-16">
-                <AvatarImage src={session?.user?.image || ""} alt={session?.user?.name || "User"} />
-                <AvatarFallback>{session?.user?.name ? getInitials(session.user.name) : "U"}</AvatarFallback>
+                <AvatarImage src={data?.user?.image || ""} alt={data?.user?.name || "User"} />
+                <AvatarFallback>{data?.user?.name ? getInitials(data.user.name) : "U"}</AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-xl">{session?.user?.name || "User"}</CardTitle>
-                <CardDescription>{session?.user?.email}</CardDescription>
+                <CardTitle className="text-xl">{data?.user?.name || "User"}</CardTitle>
+                <CardDescription>{data?.user?.email}</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
@@ -146,14 +178,16 @@ export default function ProfilePage() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Average accuracy</span>
-                    <span className="font-medium">{userStats?.averageAccuracy.toFixed(1) || 0}%</span>
+                    <span className="font-medium">
+                      {userStats?.averageAccuracy ? userStats.averageAccuracy.toFixed(1) : 0}%
+                    </span>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t">
                   <h4 className="text-sm font-medium mb-2">Top Categories</h4>
                   <div className="space-y-2">
-                    {userStats?.byCategory.slice(0, 3).map((category) => (
+                    {userStats?.byCategory?.slice(0, 3).map((category) => (
                       <div key={category.category} className="flex justify-between items-center">
                         <Badge variant="outline">{category.category}</Badge>
                         <span className="text-sm font-medium">{category.averageAccuracy.toFixed(1)}%</span>
@@ -182,7 +216,9 @@ export default function ProfilePage() {
                 <CardHeader className="pb-2">
                   <CardDescription>Average Accuracy</CardDescription>
                   <div className="flex justify-between items-center">
-                    <CardTitle className="text-2xl">{userStats?.averageAccuracy.toFixed(1) || 0}%</CardTitle>
+                    <CardTitle className="text-2xl">
+                      {userStats?.averageAccuracy ? userStats.averageAccuracy.toFixed(1) : 0}%
+                    </CardTitle>
                     <Target className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </CardHeader>
@@ -327,10 +363,102 @@ export default function ProfilePage() {
                 </Card>
               </TabsContent>
             </Tabs>
+            <div className="mt-8">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">My Quizzes</h2>
+                <Button asChild>
+                  <Link href="/create-quiz">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create New Quiz
+                  </Link>
+                </Button>
+              </div>
+
+              {quizzes.length === 0 ? (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center py-8 text-center">
+                    <BookOpen className="h-10 w-10 text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-medium mb-2">No quizzes created yet</h3>
+                    <p className="text-muted-foreground max-w-md mb-4">
+                      You haven&apos;t created any quizzes yet. Create your first quiz to share with others.
+                    </p>
+                    <Button asChild>
+                      <Link href="/createquiz">Create Your First Quiz</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {quizzes.map((quiz) => (
+                    <QuizCard key={quiz.id} quiz={quiz} onDelete={handleDeleteQuiz} />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+interface QuizCardProps {
+  quiz: Quiz
+  onDelete: (quizId: string) => void
+}
+
+function QuizCard({ quiz, onDelete }: QuizCardProps) {
+  const difficultyColor = {
+    easy: "bg-green-100 text-green-800",
+    medium: "bg-yellow-100 text-yellow-800",
+    hard: "bg-red-100 text-red-800",
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }).format(date)
+  }
+
+  return (
+    <Card className="h-full flex flex-col">
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-start">
+          <CardTitle className="text-xl">{quiz.title}</CardTitle>
+          <Badge className={difficultyColor[quiz.difficultyLevel.toLowerCase() as keyof typeof difficultyColor]}>
+            {quiz.difficultyLevel}
+          </Badge>
+        </div>
+        <CardDescription className="line-clamp-2">{quiz.description}</CardDescription>
+      </CardHeader>
+      <CardContent className="pb-2 flex-grow">
+        <div className="flex text-sm text-muted-foreground mb-2">
+          <Clock className="mr-1 h-4 w-4" />
+          Created on {formatDate(quiz.createdAt)}
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge className=" bg-white  text-black">{quiz.category}</Badge>
+          <Badge className=" bg-white  text-black">
+            {quiz.questionsCount} {quiz.questionsCount === 1 ? "question" : "questions"}
+          </Badge>
+        </div>
+      </CardContent>
+      <CardFooter className="pt-2 flex justify-between">
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onDelete(quiz.id)}
+          className="text-destructive hover:text-destructive"
+        >
+          <Trash2 className="mr-2 h-4 w-4" />
+          Delete
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }
 

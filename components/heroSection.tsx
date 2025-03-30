@@ -35,7 +35,7 @@ export default function Home() {
                 <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary/20 to-white blur-lg"></div>
                 <div className="relative bg-background border rounded-lg shadow-lg overflow-hidden">
                   <Image
-                    src="/logo.webp"
+                    src="/q.webp"
                     alt="Quiz Platform Screenshot"
                     width={500}
                     height={300}
@@ -48,7 +48,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ Section */}
       <section className="py-20 bg-muted/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
