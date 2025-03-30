@@ -7,9 +7,8 @@ import axios from "axios";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, BookOpen, Trash2, PencilLine } from "lucide-react";
+import { Loader2, Plus, BookOpen, Trash2 } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,8 +20,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import UserAccountNav from "@/components/userAccountNav";
-import SignInButton from "@/components/SignInButton";
 
 interface Quiz {
   id: string;
@@ -35,13 +32,12 @@ interface Quiz {
 }
 
 export default function QuizzesPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -57,7 +53,7 @@ export default function QuizzesPage() {
   const fetchQuizzes = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/quiz/allquiz");
+      const response = await axios.get("/api/quiz/publicquiz");
       setQuizzes(response.data.quizzes || []);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -112,7 +108,7 @@ export default function QuizzesPage() {
       <div className="max-w-6xl mx-auto pt-20">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold">My Quizzes</h1>
+            <h1 className="text-3xl font-bold">All Quizzes</h1>
             <p className="text-muted-foreground mt-1">Manage and take your created quizzes</p>
           </div>
           <Button asChild size="lg" className="w-full md:w-auto">

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -8,11 +8,7 @@ import SignInButton from './SignInButton';
 
 const Navbar = () => {
   const { data: session } = useSession();
-  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-background z-10 border-b border-border shadow-sm">

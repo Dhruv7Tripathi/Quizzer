@@ -75,7 +75,6 @@ export default function ProfilePage() {
       setLoading(false)
     }
   }
-  // setError(error.response?.data?.message || "Failed to fetch user statistics")
 
   const getInitials = (name: string) => {
     return name
