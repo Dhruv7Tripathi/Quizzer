@@ -31,7 +31,6 @@ export default function FeedbackButton() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate message is not empty
     if (!message.trim()) {
       toast({
         title: "Error",
@@ -47,29 +46,25 @@ export default function FeedbackButton() {
       const response = await axios.post("/api/feedback", {
         feedbackType,
         message,
-        email: email.trim() || undefined, // Send undefined if email is empty
+        email: email.trim() || undefined,
       });
       if (response.status !== 200) {
         throw new Error("Failed to submit feedback. Please try again.");
       }
 
-      // Reset form
       setMessage("");
       setEmail("");
       setFeedbackType("suggestion");
 
-      // Show success message
       toast({
         title: "Feedback Submitted",
         description: "Thank you for your feedback!",
       });
 
-      // Close the sheet
       setIsOpen(false);
     } catch (error) {
       console.error(error);
 
-      // Check if there's a response from the server
       const errorMessage = axios.isAxiosError(error) && error.response
         ? error.response.data.message
         : "Failed to submit feedback. Please try again.";

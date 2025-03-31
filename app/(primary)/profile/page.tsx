@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar, Clock, Edit, Trash2, Plus } from "lucide-react"
+import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar, Clock, Trash2, Plus } from "lucide-react"
 import Link from "next/link"
 
 interface QuizAttempt {

@@ -130,8 +130,8 @@ export default function TakeQuiz() {
                 <p className="text-lg">
                   Your score: {score}/{quiz.questions.length} ({((score / quiz.questions.length) * 100).toFixed(1)}%)
                 </p>
-                <Button onClick={() => router.push("/")}>
-                  Back to Home
+                <Button onClick={() => router.push("/profile")}>
+                  Back to your profile
                 </Button>
               </div>
             ) : (
