@@ -7,19 +7,8 @@ import axios from "axios";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, BookOpen, Trash2 } from "lucide-react";
+import { Loader2, Plus, BookOpen } from "lucide-react";
 import Link from "next/link";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 interface Quiz {
   id: string;
@@ -37,7 +26,6 @@ export default function QuizzesPage() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -63,22 +51,6 @@ export default function QuizzesPage() {
       }
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDeleteQuiz = async (quizId: string) => {
-    try {
-      setDeleteLoading(quizId);
-      await axios.delete(`/api/quiz/delete/${quizId}`);
-      setQuizzes((prevQuizzes) => prevQuizzes.filter((quiz) => quiz.id !== quizId));
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || "Failed to delete quiz");
-      } else {
-        setError("An unexpected error occurred");
-      }
-    } finally {
-      setDeleteLoading(null);
     }
   };
 
@@ -189,39 +161,6 @@ export default function QuizzesPage() {
                     </Link>
                   </Button>
                   <div className="flex gap-2">
-
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="outline" size="icon" className="text-destructive border-destructive/30 hover:bg-destructive/10">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Quiz</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete &quot;{quiz.title}&quot;? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDeleteQuiz(quiz.id)}
-                            disabled={deleteLoading === quiz.id}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
-                            {deleteLoading === quiz.id ? (
-                              <>
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                Deleting...
-                              </>
-                            ) : (
-                              "Delete"
-                            )}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
                   </div>
                 </CardFooter>
               </Card>

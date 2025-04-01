@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar, Clock, Trash2, Plus } from "lucide-react"
+import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar, Clock, Trash2, Plus, Share } from "lucide-react"
 import Link from "next/link"
+import { ShareQuizModal } from "@/components/share-quiz-modal"
 
 interface QuizAttempt {
   id: string
@@ -408,6 +409,8 @@ interface QuizCardProps {
 }
 
 function QuizCard({ quiz, onDelete }: QuizCardProps) {
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+
   const difficultyColor = {
     easy: "bg-green-100 text-green-800",
     medium: "bg-yellow-100 text-yellow-800",
@@ -446,8 +449,20 @@ function QuizCard({ quiz, onDelete }: QuizCardProps) {
           </Badge>
         </div>
       </CardContent>
+      <CardFooter className="flex justify-between pt-2 gap-2">
+        <Button variant="default" asChild className="flex-1">
+          <Link href={`/takequiz/${quiz.id}`} className="flex items-center justify-center">
+            <BookOpen className="h-4 w-4 mr-2" />
+            Take Quiz
+          </Link>
+        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="icon" onClick={() => setIsShareModalOpen(true)} title="Share Quiz">
+            <Share className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardFooter>
       <CardFooter className="pt-2 flex justify-between">
-
         <Button
           variant="outline"
           size="sm"
@@ -458,6 +473,12 @@ function QuizCard({ quiz, onDelete }: QuizCardProps) {
           Delete
         </Button>
       </CardFooter>
+      <ShareQuizModal
+        quizId={quiz.id}
+        quizTitle={quiz.title}
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+      />
     </Card>
   )
 }

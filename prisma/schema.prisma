@@ -8,16 +8,18 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  name         String
-  email        String        @unique
-  image        String
-  createdAt    DateTime      @default(now())
-  provider     Provider
-  options      Option[]      @relation("UserOptions")
-  questions    Question[]    @relation("UserQuestions")
-  quizzes      Quiz[]        @relation("UserQuizzes")
-  quizAttempts QuizAttempt[] @relation("UserAttempts")
+  id            String        @id @default(uuid())
+  name          String
+  email         String        @unique
+  image         String
+  createdAt     DateTime      @default(now())
+  provider      Provider
+  options       Option[]      @relation("UserOptions")
+  questions     Question[]    @relation("UserQuestions")
+  quizzes       Quiz[]        @relation("UserQuizzes")
+  quizAttempts  QuizAttempt[] @relation("UserAttempts")
+  quizShares    QuizShare[]   @relation("SharedWith")
+  sharedQuizzes QuizShare[]   @relation("SharedBy")
 }
 
 model Quiz {
@@ -33,6 +35,7 @@ model Quiz {
   questions       Question[]    @relation("QuizQuestions")
   user            User?         @relation("UserQuizzes", fields: [userId], references: [id])
   attempts        QuizAttempt[] @relation("QuizAttempts")
+  shares          QuizShare[]   @relation
 
   @@index([userId])
 }
@@ -84,6 +87,24 @@ model QuizAttempt {
 
   @@index([quizId])
   @@index([userId])
+}
+
+model QuizShare {
+  id        String   @id @default(uuid())
+  quizId    String
+  email     String
+  userId    String?
+  createdAt DateTime @default(now())
+  createdBy String
+
+  quiz    Quiz  @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  user    User? @relation("SharedWith", fields: [userId], references: [id])
+  creator User  @relation("SharedBy", fields: [createdBy], references: [id])
+
+  @@index([quizId])
+  @@index([userId])
+  @@index([email])
+  @@index([createdBy])
 }
 
 model QuizAnswer {

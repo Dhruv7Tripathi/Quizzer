@@ -114,7 +114,6 @@ export default function CreateQuiz() {
   }
 
   const handleCorrectOptionChange = (questionIndex: number, optionIndex: number) => {
-    // For the current question, set only the clicked option to be correct
     const questionOptions = getValues(`questions.${questionIndex}.options`);
     const updatedOptions = questionOptions.map((option, index) => ({
       ...option,
@@ -226,7 +225,6 @@ export default function CreateQuiz() {
                 </div>
 
                 {fields.map((field, questionIndex) => {
-                  // Get current options for this question
                   const questionOptions = getValues(`questions.${questionIndex}.options`) || [];
 
                   return (
