@@ -122,7 +122,7 @@ export async function GET(req: NextRequest) {
       if (quiz.published || quiz.userId === session.user.id) {
         hasAccess = true;
       } else {
-        const whereCondition: { quizId: string; OR: any[] } = {
+        const whereCondition: { quizId: string; OR: ({ email: string } | { userId: string })[] } = {
           quizId,
           OR: []
         };

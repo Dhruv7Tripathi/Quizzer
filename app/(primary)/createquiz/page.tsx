@@ -59,7 +59,7 @@ export default function CreateQuiz() {
           ],
         },
       ],
-      difficultyLevel: "",
+      difficultyLevel: "Easy",
     },
   })
 
@@ -88,15 +88,19 @@ export default function CreateQuiz() {
     setLoading(true)
     setError("")
 
+    const payload = {
+      userId: session?.user?.id,
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      difficultyLevel: data.difficultyLevel,
+      questions: data.questions,
+    }
+
+    console.log("Payload:", payload)
+
     try {
-      const response = await axios.post("/api/quiz/create", {
-        userId: session?.user?.id,
-        title: data.title,
-        description: data.description,
-        category: data.category,
-        difficultyLevel: data.difficultyLevel,
-        questions: data.questions,
-      })
+      const response = await axios.post("/api/quiz/create", payload)
 
       if (response.data.quiz) {
         router.push(`/quizzes`)

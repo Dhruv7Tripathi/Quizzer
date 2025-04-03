@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
 
-    const { quizId, emails, quizTitle } = await req.json()
+    const { quizId, emails } = await req.json()
 
     if (!quizId || !emails || !Array.isArray(emails) || emails.length === 0) {
       return NextResponse.json({ message: "Invalid request data" }, { status: 400 })

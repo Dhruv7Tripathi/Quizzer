@@ -78,6 +78,7 @@ export function ShareQuizModal({ quizId, quizTitle, isOpen, onClose }: ShareQuiz
       setEmails([])
       onClose()
     } catch (error) {
+      console.error("Error sharing quiz:", error)
       toast({
         title: "Failed to share quiz",
         description: "There was an error sharing your quiz. Please try again.",
@@ -93,7 +94,7 @@ export function ShareQuizModal({ quizId, quizTitle, isOpen, onClose }: ShareQuiz
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Share Quiz</DialogTitle>
-          <DialogDescription>Share your quiz "{quizTitle}" with specific users</DialogDescription>
+          <DialogDescription>Share your quiz &quot;{quizTitle}&quot; with specific users</DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="link" className="w-full">
@@ -116,7 +117,7 @@ export function ShareQuizModal({ quizId, quizTitle, isOpen, onClose }: ShareQuiz
               </Button>
             </div>
             <p className="text-sm text-muted-foreground mt-2">
-              Anyone with this link can access this quiz, even if they don't have an account.
+              Anyone with this link can access this quiz, even if they don&apos;t have an account.
             </p>
           </TabsContent>
 
