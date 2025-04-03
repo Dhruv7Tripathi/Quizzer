@@ -89,7 +89,7 @@ export default function CreateQuiz() {
     setError("")
 
     try {
-      const response = await axios.post("/api/quiz", {
+      const response = await axios.post("/api/quiz/create", {
         userId: session?.user?.id,
         title: data.title,
         description: data.description,
@@ -165,7 +165,6 @@ export default function CreateQuiz() {
                 />
                 {errors.title && <p className="text-sm text-destructive">{errors.title.message}</p>}
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
@@ -208,7 +207,6 @@ export default function CreateQuiz() {
                   </Select>
                 </div>
               </div>
-
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label>Questions</Label>
@@ -223,10 +221,8 @@ export default function CreateQuiz() {
                     Add Question
                   </Button>
                 </div>
-
                 {fields.map((field, questionIndex) => {
                   const questionOptions = getValues(`questions.${questionIndex}.options`) || [];
-
                   return (
                     <Card key={field.id}>
                       <CardContent className="pt-6">
