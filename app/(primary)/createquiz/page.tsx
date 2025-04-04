@@ -288,7 +288,7 @@ export default function CreateQuiz() {
                                     >
                                       <CheckCircle2 className={cn(
                                         "h-5 w-5",
-                                        isCorrect ? "text-white" : "text-muted-foreground"
+                                        isCorrect ? "text-white" : "text-black"
                                       )} />
                                     </Button>
                                   </div>

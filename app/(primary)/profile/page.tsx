@@ -165,10 +165,7 @@ export default function ProfilePage() {
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Member since</span>
-                    <span className="font-medium">March 2023</span>
-                  </div>
+
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Quizzes attempted</span>
                     <span className="font-medium">{userStats?.totalAttempts || 0}</span>
@@ -294,9 +291,6 @@ export default function ProfilePage() {
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                   <Badge variant="outline">{attempt.category}</Badge>
-                                  <span className="text-xs text-muted-foreground">
-                                    {formatDate(attempt.completedAt)}
-                                  </span>
                                 </div>
                                 <div className="text-sm font-medium">
                                   {attempt.score}/{attempt.totalQuestions} (
@@ -389,7 +383,7 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                   {quizzes.map((quiz) => (
                     <QuizCard key={quiz.id} quiz={quiz} onDelete={handleDeleteQuiz} />
                   ))}
