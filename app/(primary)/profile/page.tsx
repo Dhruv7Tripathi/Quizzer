@@ -117,13 +117,14 @@ export default function ProfilePage() {
       .toUpperCase()
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
+  // const formatDate = (dateString: string) => {
+  //   return new Date(dateString).toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "numeric",
+  //   })
+  // }
+
 
   const getDifficultyColor = (level: string) => {
     switch (level.toLowerCase()) {
