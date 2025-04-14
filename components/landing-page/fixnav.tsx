@@ -3,8 +3,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import UserAccountNav from './userAccountNav';
-import SignInButton from './SignInButton';
+import UserAccountNav from '../userAccountNav';
+import SignInButton from '../SignInButton';
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -15,7 +15,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center h-16 px-4">
         <Link href="/" className="flex items-center space-x-2 group">
           <Image
-            src="/q.webp"
+            src="/ww.png"
             width={35}
             height={35}
             priority={true}

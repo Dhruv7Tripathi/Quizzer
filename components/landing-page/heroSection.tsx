@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Navbar from "@/components/navbar";
 import Link from "next/link";
-import Footer from "@/components/footer";
-import FeedbackButton from "./feedbackbutton";
+import Footer from "@/components/landing-page/footer";
+import FeedbackButton from "../secondry/feedbackbutton";
 import Image from "next/image";
 import { faqItems } from "@/contants";
 export default function Home() {

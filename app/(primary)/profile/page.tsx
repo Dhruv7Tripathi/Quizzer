@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar, Clock, Trash2, Plus, Share } from "lucide-react"
 import Link from "next/link"
-import { ShareQuizModal } from "@/components/share-quiz-modal"
+import { ShareQuizModal } from "@/components/secondry/share-quiz-modal"
 
 interface QuizAttempt {
   id: string

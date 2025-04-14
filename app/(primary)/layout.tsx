@@ -1,5 +1,5 @@
 import "../globals.css";
-import Sidebar from "@/components/fixnav";
+import Sidebar from "@/components/landing-page/fixnav";
 import { Toaster } from "@/components/ui/toaster"
 export default function RootLayout({
   children,

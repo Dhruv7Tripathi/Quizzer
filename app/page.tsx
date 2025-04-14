@@ -1,17 +1,8 @@
-// import HeroSection from "../components/heroSection";
-// export default function Home() {
-//   return (
-//     <div className="min-h-screen flex flex-col bg-white text-black">
-//       <HeroSection />
-//     </div>
-//   );
-// }
-// pages/index.tsx
 "use client"
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import Navbar from '@/components/fixnav';
-import Footer from '@/components/footer'; // Import the Footer component
+import Navbar from '@/components/landing-page/fixnav';
+import Footer from '@/components/landing-page/footer';
 import {
   Accordion,
   AccordionContent,
@@ -19,6 +10,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import { faqItems } from '@/contants';
+import { Link } from 'lucide-react';
 
 const Home: NextPage = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -39,20 +31,21 @@ const Home: NextPage = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               <span className="text-white">Transform your ideas into</span>
               <br />
-              <span className="bg-gradient-to-r from-orange-200 to-orange-400 bg-clip-text text-transparent">beautiful digital experiences</span>
+              <span className="bg-gradient-to-r from-green-400 to-green-700 bg-clip-text text-transparent">beautiful digital experiences</span>
             </h1>
 
             <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-12">
               Transform your ideas into reality with our comprehensive suite of development tools and resources.
             </p>
-
-            <button
-              className={`bg-gradient-to-r from-orange-300 to-orange-400 hover:from-orange-200 hover:to-orange-400 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 ${isHovered ? 'shadow-lg shadow-orange-500/50' : ''}`}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              Get Started
-            </button>
+            <Link href='/createquiz'>
+              <button
+                className={`bg-gradient-to-r from-green-400 to-green-700 hover:from-green-400 hover:to-green-700 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 ${isHovered ? 'shadow-lg shadow-green-500/50' : ''}`}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                Get Started
+              </button>
+            </Link>
           </div>
         </main>
 
@@ -60,7 +53,7 @@ const Home: NextPage = () => {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-orange-400 px-3 py-1 text-sm text-white">
+                <div className="inline-block rounded-lg bg-green-700 px-3 py-1 text-sm text-white">
                   How It Works
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter text-white sm:text-5xl">Simple as 1-2-3</h2>
@@ -71,21 +64,21 @@ const Home: NextPage = () => {
             </div>
             <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-12 md:grid-cols-3">
               <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-400 text-3xl font-bold text-white">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-700 text-3xl font-bold text-white">
                   1
                 </div>
                 <h3 className="text-xl font-bold text-white">Enter Your Topic</h3>
                 <p className="text-gray-300">Simply type in the subject you want to create a quiz about.</p>
               </div>
               <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-400 text-3xl font-bold text-white">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-700 text-3xl font-bold text-white">
                   2
                 </div>
                 <h3 className="text-xl font-bold text-white">Customize Options</h3>
                 <p className="text-gray-300">Select difficulty level, question types, and other preferences.</p>
               </div>
               <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-400 text-3xl font-bold text-white">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-700 text-3xl font-bold text-white">
                   3
                 </div>
                 <h3 className="text-xl font-bold text-white">Generate & Share</h3>
