@@ -9,24 +9,25 @@
 // pages/index.tsx
 "use client"
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import { useState } from 'react';
-import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import Navbar from '@/components/fixnav';
+import Footer from '@/components/footer'; // Import the Footer component
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion';
+import { faqItems } from '@/contants';
+
 const Home: NextPage = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-black to-gray-950">
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-black to-gray-950 flex flex-col items-center justify-center px-4">
-        <Head>
-          <title>Transform Your Ideas | Digital Experiences</title>
-          <meta name="description" content="Transform your ideas into beautiful digital experiences" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <main className="flex flex-col items-center justify-center w-full max-w-4xl text-center">
+      <div className="flex-grow flex flex-col items-center justify-center px-4">
+        <main className="flex flex-col items-center justify-center w-full max-w-4xl text-center py-20">
           <div className="py-12">
             <div className="bg-purple-900/20 backdrop-blur-sm rounded-full py-2 px-6 inline-flex items-center mb-12">
               <span className="text-gray-300 text-sm mr-1">Welcome to Our Platform</span>
@@ -46,66 +47,84 @@ const Home: NextPage = () => {
             </p>
 
             <button
-              className={`bg-gradient-to-r from-black to-gray-700 hover:from-black hover:to-gray-600 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 ${isHovered ? 'shadow-lg shadow-purple-500/30' : ''
-                }`}
+              className={`bg-gradient-to-r from-orange-300 to-orange-400 hover:from-orange-200 hover:to-orange-400 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 ${isHovered ? 'shadow-lg shadow-orange-500/50' : ''}`}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
               Get Started
             </button>
-            {/* <ShimmerButton
-            className={`bg-gradient-to-r from-black to-gray-700 hover:from-black hover:to-gray-600 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 ${isHovered ? 'shadow-lg shadow-purple-500/30' : ''
-              }`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >Get Started</ShimmerButton> */}
           </div>
         </main>
+
         <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
+                <div className="inline-block rounded-lg bg-orange-400 px-3 py-1 text-sm text-white">
                   How It Works
                 </div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Simple as 1-2-3</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <h2 className="text-3xl font-bold tracking-tighter text-white sm:text-5xl">Simple as 1-2-3</h2>
+                <p className="max-w-[900px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Creating the perfect quiz has never been easier with our streamlined process.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-12 md:grid-cols-3">
               <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl font-bold text-primary-foreground">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-400 text-3xl font-bold text-white">
                   1
                 </div>
-                <h3 className="text-xl font-bold">Enter Your Topic</h3>
-                <p className="text-muted-foreground">Simply type in the subject you want to create a quiz about.</p>
+                <h3 className="text-xl font-bold text-white">Enter Your Topic</h3>
+                <p className="text-gray-300">Simply type in the subject you want to create a quiz about.</p>
               </div>
               <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl font-bold text-primary-foreground">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-400 text-3xl font-bold text-white">
                   2
                 </div>
-                <h3 className="text-xl font-bold">Customize Options</h3>
-                <p className="text-muted-foreground">Select difficulty level, question types, and other preferences.</p>
+                <h3 className="text-xl font-bold text-white">Customize Options</h3>
+                <p className="text-gray-300">Select difficulty level, question types, and other preferences.</p>
               </div>
               <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl font-bold text-primary-foreground">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-400 text-3xl font-bold text-white">
                   3
                 </div>
-                <h3 className="text-xl font-bold">Generate & Share</h3>
-                <p className="text-muted-foreground">Get your quiz instantly and share it with students or friends.</p>
+                <h3 className="text-xl font-bold text-white">Generate & Share</h3>
+                <p className="text-gray-300">Get your quiz instantly and share it with students or friends.</p>
               </div>
             </div>
           </div>
         </section>
+
+        <section className="w-full py-20 bg-black/30">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Frequently Asked Questions</h2>
+              <p className="text-gray-300 max-w-2xl mx-auto">
+                Got questions? We've got answers. Here are some of the most common queries about our quiz platform.
+              </p>
+            </div>
+            <Accordion type="single" collapsible className="max-w-3xl mx-auto">
+              {faqItems.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index}`} className="border-b border-gray-700">
+                  <AccordionTrigger className="text-lg font-semibold text-white py-4">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300 pb-4">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </section>
       </div>
+
+      <Footer />
     </div>
   );
 };
 
 export default Home;
-
 // import Link from "next/link"
 // import Image from "next/image"
 // import { Button } from "@/components/ui/button"
