@@ -3,8 +3,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import UserAccountNav from '../userAccountNav';
-import SignInButton from '../SignInButton';
+import UserAccountNav from '../auth/userAccountNav';
+import SignInButton from '../auth/SignInButton';
 
 const Navbar = () => {
   const { data: session } = useSession();

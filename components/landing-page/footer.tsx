@@ -14,12 +14,12 @@ const Footer = () => {
               <div className="mb-4 flex">
                 <Link href="/" className="flex items-center space-x-1">
                   <Image src="/ww.png" width={30} height={30} priority={false} alt="Logo" unoptimized={true} className="rounded-xl" />
-                  <span className="text-2xl font-extrabold text-green-600">Quizzer</span>
+                  <span className="text-xl font-extrabold text-white">Quizzer</span>
                 </Link>
               </div>
               <div className="mt-2">
                 Building in public at
-                <a className="text-green-700 pl-1 font-medium" target="__blank" href="https://github.com/dhruv7tripathi">@dhruv7tripathi</a>
+                <a className="text-green-400 pl-1 font-medium" target="__blank" href="https://github.com/dhruv7tripathi">@dhruv7tripathi</a>
               </div>
             </div>
 
