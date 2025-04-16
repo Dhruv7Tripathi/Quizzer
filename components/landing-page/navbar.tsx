@@ -60,7 +60,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-md hover:bg-green-400 dark:hover:bg-green-700 transition-colors"
               aria-label="Toggle menu"
             >
               {isOpen ? (
