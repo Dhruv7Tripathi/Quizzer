@@ -81,7 +81,7 @@ export default function QuizzesPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold">All Quizzes</h1>
-            <p className="text-muted-foreground mt-1">Manage and take your created quizzes</p>
+            <p className="text-white mt-1">Manage and take your created quizzes</p>
           </div>
           <Button asChild size="lg" className="w-full md:w-auto">
             <Link href="/createquiz" className="flex items-center gap-2">

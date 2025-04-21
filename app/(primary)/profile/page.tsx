@@ -7,10 +7,9 @@ import axios from "axios"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Trophy, Target, BookOpen, BarChart3, Calendar, Clock, Trash2, Plus, Share } from "lucide-react"
+import { Loader2, BookOpen, Calendar, Clock, Trash2, Plus, Share } from "lucide-react"
 import Link from "next/link"
 import { ShareQuizModal } from "@/components/secondry/share-quiz-modal"
 
@@ -117,15 +116,6 @@ export default function ProfilePage() {
       .toUpperCase()
   }
 
-  // const formatDate = (dateString: string) => {
-  //   return new Date(dateString).toLocaleDateString("en-US", {
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "numeric",
-  //   })
-  // }
-
-
   const getDifficultyColor = (level: string) => {
     switch (level.toLowerCase()) {
       case "easy":
@@ -148,252 +138,180 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-28 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background py-4 px-4 pb-20">
       <div className="max-w-6xl mx-auto">
-        {error && <div className="bg-destructive/15 text-destructive p-3 rounded-md mb-6">{error}</div>}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="lg:col-span-1">
-            <CardHeader className="flex flex-row items-center gap-4 pb-2">
-              <Avatar className="h-16 w-16">
-                <AvatarImage src={data?.user?.image || ""} alt={data?.user?.name || "User"} />
-                <AvatarFallback>{data?.user?.name ? getInitials(data.user.name) : "U"}</AvatarFallback>
-              </Avatar>
-              <div>
-                <CardTitle className="text-xl">{data?.user?.name || "User"}</CardTitle>
-                <CardDescription>{data?.user?.email}</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="space-y-2">
+        {error && <div className="bg-destructive/15 text-destructive p-3 rounded-md mb-4">{error}</div>}
 
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Quizzes attempted</span>
-                    <span className="font-medium">{userStats?.totalAttempts || 0}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Quizzes completed</span>
-                    <span className="font-medium">{userStats?.completedQuizzes || 0}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Average accuracy</span>
-                    <span className="font-medium">
-                      {userStats?.averageAccuracy ? userStats.averageAccuracy.toFixed(1) : 0}%
-                    </span>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t">
-                  <h4 className="text-sm font-medium mb-2">Top Categories</h4>
-                  <div className="space-y-2">
-                    {userStats?.byCategory?.slice(0, 3).map((category) => (
-                      <div key={category.category} className="flex justify-between items-center">
-                        <Badge variant="outline">{category.category}</Badge>
-                        <span className="text-sm font-medium">{category.averageAccuracy.toFixed(1)}%</span>
-                      </div>
-                    ))}
-                    {(!userStats?.byCategory || userStats.byCategory.length === 0) && (
-                      <p className="text-sm text-muted-foreground">No categories yet</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <Button asChild className="w-full">
-                    <Link href="/quizzes">
-                      <BookOpen className="h-4 w-4 mr-2" />
-                      View All Quizzes
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <div className="lg:col-span-2 space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardDescription>Average Accuracy</CardDescription>
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-2xl">
-                      {userStats?.averageAccuracy ? userStats.averageAccuracy.toFixed(1) : 0}%
-                    </CardTitle>
-                    <Target className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <Progress value={userStats?.averageAccuracy || 0} className="h-2" />
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardDescription>Quizzes Attempted</CardDescription>
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-2xl">{userStats?.totalAttempts || 0}</CardTitle>
-                    <BookOpen className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xs text-muted-foreground">{userStats?.completedQuizzes || 0} completed</div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardDescription>Highest Score</CardDescription>
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-2xl">
-                      {userStats?.highestScore
-                        ? `${Math.round((userStats.highestScore.score / userStats.highestScore.totalQuestions) * 100)}%`
-                        : "N/A"}
-                    </CardTitle>
-                    <Trophy className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xs text-muted-foreground truncate">
-                    {userStats?.highestScore?.quizTitle || "No quizzes completed yet"}
-                  </div>
-                </CardContent>
-              </Card>
+        {/* User Profile Card */}
+        <Card className="mb-4">
+          <CardHeader className="flex flex-row items-center gap-4 pb-2">
+            <Avatar className="h-12 w-12 md:h-16 md:w-16">
+              <AvatarImage src={data?.user?.image || ""} alt={data?.user?.name || "User"} />
+              <AvatarFallback>{data?.user?.name ? getInitials(data.user.name) : "U"}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <CardTitle className="text-lg md:text-xl truncate">{data?.user?.name || "User"}</CardTitle>
+              <CardDescription className="truncate">{data?.user?.email}</CardDescription>
             </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid grid-cols-3 gap-2 text-sm">
+                <div className="flex flex-col items-center p-2 bg-muted/30 rounded-md">
+                  <span className="text-lg font-medium">{userStats?.totalAttempts || 0}</span>
+                  <span className="text-xs text-muted-foreground">Attempted</span>
+                </div>
+                <div className="flex flex-col items-center p-2 bg-muted/30 rounded-md">
+                  <span className="text-lg font-medium">{userStats?.completedQuizzes || 0}</span>
+                  <span className="text-xs text-muted-foreground">Completed</span>
+                </div>
+                <div className="flex flex-col items-center p-2 bg-muted/30 rounded-md">
+                  <span className="text-lg font-medium">
+                    {userStats?.averageAccuracy ? userStats.averageAccuracy.toFixed(0) : 0}%
+                  </span>
+                  <span className="text-xs text-muted-foreground">Accuracy</span>
+                </div>
+              </div>
 
-            <Tabs defaultValue="recent" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="recent">Recent Activity</TabsTrigger>
-                <TabsTrigger value="performance">Performance</TabsTrigger>
-              </TabsList>
+              <div className="pt-2 border-t">
+                <h4 className="text-sm font-medium mb-2">Top Categories</h4>
+                <div className="flex flex-wrap gap-2">
+                  {userStats?.byCategory?.slice(0, 3).map((category) => (
+                    <Badge key={category.category} variant="outline" className="flex justify-between items-center gap-2">
+                      {category.category}
+                      <span className="text-xs">{category.averageAccuracy.toFixed(0)}%</span>
+                    </Badge>
+                  ))}
+                  {(!userStats?.byCategory || userStats.byCategory.length === 0) && (
+                    <p className="text-sm text-muted-foreground">No categories yet</p>
+                  )}
+                </div>
+              </div>
 
-              <TabsContent value="recent" className="mt-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Recent Quiz Attempts</CardTitle>
-                    <CardDescription>Your latest quiz activities</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {userStats?.recentAttempts && userStats.recentAttempts.length > 0 ? (
-                      <div className="space-y-4">
-                        {userStats.recentAttempts.map((attempt) => (
-                          <div
-                            key={attempt.id}
-                            className="flex items-start gap-4 pb-4 border-b last:border-0 last:pb-0"
-                          >
-                            <div className="rounded-full bg-primary/10 p-2">
-                              <Calendar className="h-4 w-4 text-primary" />
-                            </div>
-                            <div className="flex-1 space-y-1">
-                              <div className="flex items-center justify-between">
-                                <p className="font-medium">{attempt.quizTitle}</p>
-                                <Badge variant="secondary" className={getDifficultyColor(attempt.difficultyLevel)}>
-                                  {attempt.difficultyLevel}
-                                </Badge>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                  <Badge variant="outline">{attempt.category}</Badge>
-                                </div>
-                                <div className="text-sm font-medium">
-                                  {attempt.score}/{attempt.totalQuestions} (
-                                  {Math.round((attempt.score / attempt.totalQuestions) * 100)}%)
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center py-8 text-center">
-                        <BookOpen className="h-10 w-10 text-muted-foreground mb-4" />
-                        <h3 className="text-lg font-medium mb-2">No quiz attempts yet</h3>
-                        <p className="text-muted-foreground max-w-md mb-4">
-                          You haven&apos;t attempted any quizzes yet. Start by taking a quiz to see your performance.
-                        </p>
-                        <Button asChild>
-                          <Link href="/quizzes">Browse Quizzes</Link>
-                        </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="performance" className="mt-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Performance by Category</CardTitle>
-                    <CardDescription>Your accuracy across different quiz categories</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {userStats?.byCategory && userStats.byCategory.length > 0 ? (
-                      <div className="space-y-6">
-                        {userStats.byCategory.map((category) => (
-                          <div key={category.category} className="space-y-2">
-                            <div className="flex justify-between items-center">
-                              <div className="flex items-center gap-2">
-                                <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                                <span className="font-medium">{category.category}</span>
-                              </div>
-                              <div className="text-sm">
-                                <span className="font-medium">{category.averageAccuracy.toFixed(1)}%</span>
-                                <span className="text-muted-foreground ml-2">({category.attempts} attempts)</span>
-                              </div>
-                            </div>
-                            <Progress value={category.averageAccuracy} className="h-2" />
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center py-8 text-center">
-                        <Target className="h-10 w-10 text-muted-foreground mb-4" />
-                        <h3 className="text-lg font-medium mb-2">No performance data yet</h3>
-                        <p className="text-muted-foreground max-w-md mb-4">
-                          Complete some quizzes to see your performance metrics by category.
-                        </p>
-                        <Button asChild>
-                          <Link href="/quizzes">Take a Quiz</Link>
-                        </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-            <div className="mt-8">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">My Quizzes</h2>
-                <Button asChild>
-                  <Link href="/create-quiz">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create New Quiz
+              <div className="pt-2">
+                <Button asChild className="w-40">
+                  <Link href="/quizzes">
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    View All Quizzes
                   </Link>
                 </Button>
               </div>
-
-              {quizzes.length === 0 ? (
-                <Card>
-                  <CardContent className="flex flex-col items-center justify-center py-8 text-center">
-                    <BookOpen className="h-10 w-10 text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-medium mb-2">No quizzes created yet</h3>
-                    <p className="text-muted-foreground max-w-md mb-4">
-                      You haven&apos;t created any quizzes yet. Create your first quiz to share with others.
-                    </p>
-                    <Button asChild>
-                      <Link href="/createquiz">Create Your First Quiz</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-                  {quizzes.map((quiz) => (
-                    <QuizCard key={quiz.id} quiz={quiz} onDelete={handleDeleteQuiz} />
-                  ))}
-                </div>
-              )}
             </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          <Card className="p-2">
+            <div className="flex flex-col items-center">
+              <span className="text-lg font-medium">
+                {userStats?.averageAccuracy ? userStats.averageAccuracy.toFixed(0) : 0}%
+              </span>
+              <span className="text-xs text-muted-foreground">Accuracy</span>
+            </div>
+          </Card>
+
+          <Card className="p-2">
+            <div className="flex flex-col items-center">
+              <span className="text-lg font-medium">{userStats?.totalAttempts || 0}</span>
+              <span className="text-xs text-muted-foreground">Attempted</span>
+            </div>
+          </Card>
+
+          <Card className="p-2">
+            <div className="flex flex-col items-center">
+              <span className="text-lg font-medium">
+                {userStats?.highestScore
+                  ? `${Math.round((userStats.highestScore.score / userStats.highestScore.totalQuestions) * 100)}%`
+                  : "0%"}
+              </span>
+              <span className="text-xs text-muted-foreground">Best</span>
+            </div>
+          </Card>
+        </div>
+
+        <Tabs defaultValue="recent" className="w-full mb-4">
+          <TabsList className="grid w-full grid-cols-1">
+            <TabsTrigger value="recent">Recent Activity</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="recent" className="mt-2">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Recent Quiz Attempts</CardTitle>
+              </CardHeader>
+              <CardContent className="px-2 py-0">
+                {userStats?.recentAttempts && userStats.recentAttempts.length > 0 ? (
+                  <div className="space-y-3">
+                    {userStats.recentAttempts.map((attempt) => (
+                      <div
+                        key={attempt.id}
+                        className="flex items-start gap-3 py-3 border-b last:border-0"
+                      >
+                        <div className="rounded-full bg-primary/10 p-2 flex-shrink-0">
+                          <Calendar className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm truncate">{attempt.quizTitle}</p>
+                          <div className="flex flex-wrap items-center gap-2 mt-1">
+                            <Badge variant="outline" className="text-xs">{attempt.category}</Badge>
+                            <Badge variant="secondary" className={`text-xs ${getDifficultyColor(attempt.difficultyLevel)}`}>
+                              {attempt.difficultyLevel}
+                            </Badge>
+                          </div>
+                          <div className="text-xs font-medium mt-1">
+                            Score: {attempt.score}/{attempt.totalQuestions} (
+                            {Math.round((attempt.score / attempt.totalQuestions) * 100)}%)
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-6 text-center">
+                    <BookOpen className="h-8 w-8 text-muted-foreground mb-2" />
+                    <h3 className="text-base font-medium mb-2">No quiz attempts yet</h3>
+                    <Button asChild size="sm">
+                      <Link href="/quizzes">Browse Quizzes</Link>
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        <div className="mb-24">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-bold">My Quizzes</h2>
+            <Button asChild size="sm">
+              <Link href="/create-quiz">
+                <Plus className="h-4 w-4 mr-1" />
+                Create
+              </Link>
+            </Button>
           </div>
+
+          {quizzes.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center py-6 text-center">
+                <BookOpen className="h-8 w-8 text-muted-foreground mb-2" />
+                <h3 className="text-base font-medium mb-2">No quizzes created yet</h3>
+                <Button asChild size="sm">
+                  <Link href="/createquiz">Create Your First Quiz</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {quizzes.map((quiz) => (
+                <QuizCard key={quiz.id} quiz={quiz} onDelete={handleDeleteQuiz} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
+
+      <div className="h-16"></div>
     </div>
   )
 }
@@ -422,50 +340,52 @@ function QuizCard({ quiz, onDelete }: QuizCardProps) {
   }
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-xl">{quiz.title}</CardTitle>
-          <Badge className={difficultyColor[quiz.difficultyLevel.toLowerCase() as keyof typeof difficultyColor]}>
+    <Card>
+      <CardHeader className="p-3">
+        <div className="flex justify-between items-start gap-2">
+          <CardTitle className="text-base truncate">{quiz.title}</CardTitle>
+          <Badge className={`text-xs ${difficultyColor[quiz.difficultyLevel.toLowerCase() as keyof typeof difficultyColor]}`}>
             {quiz.difficultyLevel}
           </Badge>
         </div>
-        <CardDescription className="line-clamp-2">{quiz.description}</CardDescription>
+        <CardDescription className="line-clamp-2 text-xs">{quiz.description}</CardDescription>
       </CardHeader>
-      <CardContent className="pb-2 flex-grow">
-        <div className="flex text-sm text-muted-foreground mb-2">
-          <Clock className="mr-1 h-4 w-4" />
-          Created on {formatDate(quiz.createdAt)}
+      <CardContent className="p-3 pt-0">
+        <div className="flex items-center text-xs text-muted-foreground mb-2">
+          <Clock className="mr-1 h-3 w-3" />
+          {formatDate(quiz.createdAt)}
         </div>
-        <div className="flex items-center gap-2">
-          <Badge className=" bg-white  text-black">{quiz.category}</Badge>
-          <Badge className=" bg-white  text-black">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge className="bg-white text-black text-xs">{quiz.category}</Badge>
+          <Badge className="bg-white text-black text-xs">
             {quiz.questionsCount} {quiz.questionsCount === 1 ? "question" : "questions"}
           </Badge>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between pt-2 gap-2">
-        <Button variant="default" asChild className="flex-1">
+      <CardFooter className="p-3 pt-0 flex justify-between gap-2">
+        <Button variant="default" asChild size="sm" className="flex-1">
           <Link href={`/takequiz/${quiz.id}`} className="flex items-center justify-center">
-            <BookOpen className="h-4 w-4 mr-2" />
+            <BookOpen className="h-4 w-4 mr-1" />
             Take Quiz
           </Link>
         </Button>
-        <div className="flex gap-2">
-          <Button variant="outline" size="icon" onClick={() => setIsShareModalOpen(true)} title="Share Quiz">
-            <Share className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardFooter>
-      <CardFooter className="pt-2 flex justify-between">
         <Button
           variant="outline"
-          size="sm"
-          onClick={() => onDelete(quiz.id)}
-          className="text-destructive hover:text-destructive"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setIsShareModalOpen(true)}
+          title="Share Quiz"
         >
-          <Trash2 className="mr-2 h-4 w-4" />
-          Delete
+          <Share className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-8 w-8 text-red-600 hover:text-red-800"
+          onClick={() => onDelete(quiz.id)}
+          title="Delete Quiz"
+        >
+          <Trash2 className="h-4 w-4" />
         </Button>
       </CardFooter>
       <ShareQuizModal
@@ -477,4 +397,3 @@ function QuizCard({ quiz, onDelete }: QuizCardProps) {
     </Card>
   )
 }
-

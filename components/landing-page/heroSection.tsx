@@ -17,7 +17,7 @@ import { ChevronRight } from "lucide-react";
 export default function LandingPage() {
   const [isHovered, setIsHovered] = useState(false);
   const SparklesSection = () => (
-    <div className="relative w-full sm:w-[40rem] h-40 mx-auto">
+    <div className="relative w-30 sm:w-[40rem] h-24 mx-auto">
       <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bg-gradient-to-r from-transparent via-green-500 to-transparent h-[2px] blur-sm w-3/4" />
       <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bg-gradient-to-r from-transparent via-green-500 to-transparent h-px w-3/4" />
       <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bg-gradient-to-r from-transparent via-green-300 to-transparent h-[5px] blur-sm w-1/4" />
@@ -56,7 +56,7 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-black to-gray-950 text-white overflow-x-hidden">
       <Navbar />
       <div className="flex-grow flex flex-col items-center justify-center px-4">
-        <main className="w-full max-w-4xl text-center py-16 sm:py-20 px-4 sm:px-6">
+        <main className="w-full min-h-screen max-w-4xl text-center py-16 sm:py-20 px-4 sm:px-6">
           <div className="relative">
             <div className="bg-black/60 backdrop-blur-md rounded-full inline-flex items-center gap-1 px-4 py-2 mb-2 border border-white/10">
               <span className="text-white text-sm">Welcome to Our Platform</span>
@@ -95,7 +95,7 @@ export default function LandingPage() {
                 </h2>
               </div>
               <SparklesSection />
-              <p className="text-sm sm:text-base max-w-[600px] sm:max-w-[800px] mx-auto text-gray-300">
+              <p className="text-sm sm:text-base max-w-[600px] sm:max-w-[800px] mx-auto text-white">
                 Creating the perfect quiz has never been easier with our
                 streamlined process.
               </p>
@@ -111,7 +111,7 @@ export default function LandingPage() {
                     {item.step}
                   </div>
                   <h3 className="text-lg sm:text-xl font-semibold">{item.title}</h3>
-                  <p className="text-sm sm:text-base text-gray-300">{item.desc}</p>
+                  <p className="text-sm sm:text-base text-white">{item.desc}</p>
                 </div>
               ))}
             </div>

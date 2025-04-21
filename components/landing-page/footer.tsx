@@ -5,30 +5,28 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="bg-black py-12 text-white">
-      <div className="container mx-auto px-4">
-        {/* Grid container */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          {/* Logo & info */}
+    <footer className="bg-black py-10 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+          {/* Logo + Info */}
           <div>
-            <div className="mb-4 flex items-center space-x-2">
-              <Link href="/" className="flex items-center space-x-2">
-                <Image
-                  src="/ww.png"
-                  width={30}
-                  height={30}
-                  alt="Logo"
-                  className="rounded-xl"
-                  unoptimized
-                />
-                <span className="text-xl font-extrabold text-white">Quizzer</span>
-              </Link>
-            </div>
+            <Link href="/" className="flex items-center space-x-2 mb-4">
+              <Image
+                src="/ww.png"
+                width={30}
+                height={30}
+                alt="Logo"
+                className="rounded-xl"
+                unoptimized
+              />
+              <span className="text-xl font-extrabold text-white">Quizzer</span>
+            </Link>
             <p className="text-sm mt-2">
               Building in public at
               <a
                 className="text-green-400 pl-1 font-medium"
-                target="__blank"
+                target="_blank"
+                rel="noopener noreferrer"
                 href="https://github.com/dhruv7tripathi"
               >
                 @dhruv7tripathi
@@ -36,11 +34,10 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* All sections */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:col-span-3">
-            {/* Features */}
+          {/* Navigation Links */}
+          <div className="md:col-span-3 grid grid-cols-2 gap-8 sm:grid-cols-3">
             <div>
-              <h3 className="font-semibold text-lg mb-3">Features</h3>
+              <h3 className="font-semibold text-base mb-3">Features</h3>
               <ul className="space-y-2 text-sm">
                 <li><Link href="/" className="text-gray-300 hover:text-green-500">Home</Link></li>
                 <li><Link href="/quizzes" className="text-gray-300 hover:text-green-500">Dashboard</Link></li>
@@ -49,9 +46,8 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Social */}
             <div>
-              <h3 className="font-semibold text-lg mb-3">Social</h3>
+              <h3 className="font-semibold text-base mb-3">Social</h3>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link
@@ -60,7 +56,8 @@ const Footer = () => {
                     className="flex items-center space-x-2 text-gray-300 hover:text-green-500"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19 0h-14c-2.76..." /></svg>
+                      <path d="M19 0h-14c-2.76..." />
+                    </svg>
                     <span>LinkedIn</span>
                   </Link>
                 </li>
@@ -71,7 +68,8 @@ const Footer = () => {
                     className="flex items-center space-x-2 text-gray-300 hover:text-green-500"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M24 4.55..." /></svg>
+                      <path d="M24 4.55..." />
+                    </svg>
                     <span>Twitter</span>
                   </Link>
                 </li>
@@ -82,16 +80,16 @@ const Footer = () => {
                     className="flex items-center space-x-2 text-gray-300 hover:text-green-500"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 0c-6.62..." /></svg>
+                      <path d="M12 0c-6.62..." />
+                    </svg>
                     <span>GitHub</span>
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Others */}
             <div>
-              <h3 className="font-semibold text-lg mb-3">Others</h3>
+              <h3 className="font-semibold text-base mb-3">Others</h3>
               <ul className="space-y-2 text-sm">
                 <li><Link href="/about" className="text-gray-300 hover:text-green-500">About Us</Link></li>
                 <li><Link href="/privacypolicy" className="text-gray-300 hover:text-green-500">Privacy Policy</Link></li>
@@ -101,9 +99,8 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Footer bottom */}
-        <div className="mt-12 border-t border-green-500 pt-4 text-center">
-          <p className="text-sm text-white">
+        <div className="mt-10 border-t border-green-500 pt-4 text-center">
+          <p className="text-sm text-gray-300">
             © {new Date().getFullYear()} Quizzer. All rights reserved.
           </p>
         </div>
