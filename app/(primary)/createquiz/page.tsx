@@ -193,13 +193,6 @@ export default function CreateQuiz() {
 
                 <div className="space-y-2">
                   <Label htmlFor="difficultyLevel">Difficulty Level</Label>
-                  {/* <Select
-                    onValueChange={(value) => {
-                      const event = { target: { value } }
-                      register("difficultyLevel").onChange(event)
-                    }}
-                    defaultValue="Easy"
-                  > */}
                   <Controller
                     control={control}
                     name="difficultyLevel"
@@ -217,16 +210,6 @@ export default function CreateQuiz() {
                       </Select>
                     )}
                   />
-
-                  {/* <SelectTrigger id="difficultyLevel">
-                      <SelectValue placeholder="Select difficulty" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Easy">Easy</SelectItem>
-                      <SelectItem value="Medium">Medium</SelectItem>
-                      <SelectItem value="Hard">Hard</SelectItem>
-                    </SelectContent>
-                  </Select> */}
                 </div>
               </div>
               <div className="space-y-4">
@@ -299,14 +282,17 @@ export default function CreateQuiz() {
                                     />
                                     <Button
                                       type="button"
-                                      variant={isCorrect ? "default" : "outline"}
+                                      variant="outline"
                                       size="icon"
                                       onClick={() => handleCorrectOptionChange(questionIndex, optionIndex)}
-                                      className="w-10 h-10"
+                                      className={cn(
+                                        "w-10 h-10 border-2",
+                                        isCorrect ? "bg-green-500 border-green-600 text-white" : "border-gray-300"
+                                      )}
                                     >
                                       <CheckCircle2 className={cn(
                                         "h-5 w-5",
-                                        isCorrect ? "text-white" : "text-black"
+                                        isCorrect ? "text-white" : "text-gray-500"
                                       )} />
                                     </Button>
                                   </div>
