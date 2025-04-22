@@ -13,7 +13,7 @@ import { PlusCircle, MinusCircle, Loader2, CheckCircle2 } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-
+import { Controller } from "react-hook-form"
 interface Option {
   text: string
   isCorrect: boolean
@@ -193,14 +193,32 @@ export default function CreateQuiz() {
 
                 <div className="space-y-2">
                   <Label htmlFor="difficultyLevel">Difficulty Level</Label>
-                  <Select
+                  {/* <Select
                     onValueChange={(value) => {
                       const event = { target: { value } }
                       register("difficultyLevel").onChange(event)
                     }}
                     defaultValue="Easy"
-                  >
-                    <SelectTrigger id="difficultyLevel">
+                  > */}
+                  <Controller
+                    control={control}
+                    name="difficultyLevel"
+                    rules={{ required: "Difficulty level is required" }}
+                    render={({ field }) => (
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger id="difficultyLevel">
+                          <SelectValue placeholder="Select difficulty" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Easy">Easy</SelectItem>
+                          <SelectItem value="Medium">Medium</SelectItem>
+                          <SelectItem value="Hard">Hard</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+
+                  {/* <SelectTrigger id="difficultyLevel">
                       <SelectValue placeholder="Select difficulty" />
                     </SelectTrigger>
                     <SelectContent>
@@ -208,7 +226,7 @@ export default function CreateQuiz() {
                       <SelectItem value="Medium">Medium</SelectItem>
                       <SelectItem value="Hard">Hard</SelectItem>
                     </SelectContent>
-                  </Select>
+                  </Select> */}
                 </div>
               </div>
               <div className="space-y-4">
