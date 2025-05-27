@@ -129,14 +129,14 @@ export default function LandingPage() {
             <Accordion
               type="single"
               collapsible
-              className="max-w-3xl mx-auto divide-y divide-gray-700"
+              className="max-w-3xl mx-auto divide-y dark:hover:bg-green-700 divide-gray-700"
             >
               {faqItems.map((item, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left text-base sm:text-lg font-medium py-4 text-white">
+                  <AccordionTrigger className="text-left dark:hover:text-green-700  sm:text-lg font-medium py-4 text-white">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm sm:text-base text-gray-300 pb-4">
+                  <AccordionContent className="text-sm sm:text-base text-gray-200 pb-4">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
